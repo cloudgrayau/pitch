@@ -42,23 +42,21 @@ Caching can be enabled (recommended) and the cache directory can be customised. 
 
 ## Using Pitch
 
-**/scss/** - {% do view.registerCssFile(url('scss/FILENAME.css')) %}
-**/css/** - {% do view.registerCssFile(url('css/FILENAME.css')) %}
-**/js/** - {% do view.registerJsFile(url('js/FILENAME.js')) %}
+- **/scss/** - `{% do view.registerCssFile(url('scss/FILENAME.css')) %}` 
+- **/css/** - `{% do view.registerCssFile(url('css/FILENAME.css')) %}` 
+- **/js/** - `{% do view.registerJsFile(url('js/FILENAME.js')) %}`
 
 To merge files, use commas (this will merge the included files based on the directory location of the original file).
 
 For example, '**/scss/assets/style,test,folder/slide.css**' will merge the following files and parse via SCSS:
 
-/CRAFT/web/assets/style.css
-/CRAFT/web/assets/test.css
-/CRAFT/web/assets/folder/test.css
+- /CRAFT/web/assets/style.css
+- /CRAFT/web/assets/test.css
+- /CRAFT/web/assets/folder/test.css
 
 For example, '**/js/assets/site,plugin/chosen.js**' will merge the following files and minify the JavaScript:
 
-/CRAFT/web/assets/site.js
-/CRAFT/web/assets/plugin/chosen.js
-
-
+- /CRAFT/web/assets/site.js
+- /CRAFT/web/assets/plugin/chosen.js
 
 Brought to you by [Cloud Gray Pty Ltd](https://cloudgray.com.au/)
