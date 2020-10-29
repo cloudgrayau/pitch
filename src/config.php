@@ -23,10 +23,7 @@
  */
 
 return [
-
-    // This controls blah blah blah
-    'cssForma' => 'Crunched'
-    'useCache' => true,
-    'cacheDir' => '@storage/pitch',
-
+  'cssFormat' => 'Crunched',
+  'useCache' => true,
+  'cacheDir' => '@storage/pitch',
 ];

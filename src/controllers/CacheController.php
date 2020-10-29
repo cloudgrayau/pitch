@@ -18,29 +18,29 @@ use craft\web\Controller;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.0
+ * @since     1.0.1
  */
 class CacheController extends Controller {
 
-    // Protected Properties
-    // =========================================================================
+  // Protected Properties
+  // =========================================================================
 
-    /**
-     * @var    bool|array Allows anonymous access to this controller's actions.
-     *         The actions must be in 'kebab-case'
-     * @access protected
-     */
-    protected $allowAnonymous = [];
+  /**
+   * @var    bool|array Allows anonymous access to this controller's actions.
+   *         The actions must be in 'kebab-case'
+   * @access protected
+   */
+  protected $allowAnonymous = [];
 
-    // Public Methods
-    // =========================================================================
+  // Public Methods
+  // =========================================================================
 
-    /**
-     * @return mixed
-     */
-    public function actionClearCache(){
-      $this->setSuccessFlash(Craft::t('app', 'Cache successfully cleared.'));
-      Pitch::getInstance()->clearCache();
-    }
+  /**
+   * @return mixed
+   */
+  public function actionClearCache(){
+    $this->setSuccessFlash(Craft::t('app', 'Cache successfully cleared.'));
+    Pitch::getInstance()->clearCache();
+  }
 
 }

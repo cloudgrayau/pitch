@@ -30,126 +30,126 @@ use yii\base\Event;
  *
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.0
+ * @since     1.0.1
  *
  */
 class Pitch extends Plugin {
-    // Static Properties
-    // =========================================================================
+  // Static Properties
+  // =========================================================================
 
-    /**
-     * @var Pitch
-     */
-    public static $plugin;
+  /**
+   * @var Pitch
+   */
+  public static $plugin;
 
-    // Public Properties
-    // =========================================================================
+  // Public Properties
+  // =========================================================================
 
-    /**
-     * @var string
-     */
-    public $schemaVersion = '1.0.0';
+  /**
+   * @var string
+   */
+  public $schemaVersion = '1.0.0';
 
-    /**
-     * @var bool
-     */
-    public $hasCpSettings = true;
+  /**
+   * @var bool
+   */
+  public $hasCpSettings = true;
 
-    /**
-     * @var bool
-     */
-    public $hasCpSection = false;
+  /**
+   * @var bool
+   */
+  public $hasCpSection = false;
 
-    // Public Methods
-    // =========================================================================
+  // Public Methods
+  // =========================================================================
 
-    /**
-     * @inheritdoc
-     */
-    public function init(){
-        parent::init();
-        self::$plugin = $this;
+  /**
+   * @inheritdoc
+   */
+  public function init(){
+    parent::init();
+    self::$plugin = $this;
 
-        Event::on(
-            UrlManager::class,
-            UrlManager::EVENT_REGISTER_SITE_URL_RULES,
-            function (RegisterUrlRulesEvent $event){
-              $event->rules['css/<action:.+>.css'] = 'pitch/css';
-              $event->rules['scss/<action:.+>.css'] = 'pitch/scss';
-              $event->rules['js/<action:.+>.js'] = 'pitch/js';
-            }
-        );
-        
-        Event::on(
-            UrlManager::class,
-            UrlManager::EVENT_REGISTER_CP_URL_RULES,
-            function (RegisterUrlRulesEvent $event){
-                $event->rules['pitch/clear'] = 'pitch/cache/clear-cache';
-            }
-        );
+    Event::on(
+      UrlManager::class,
+      UrlManager::EVENT_REGISTER_SITE_URL_RULES,
+      function (RegisterUrlRulesEvent $event){
+        $event->rules['css/<action:.+>.css'] = 'pitch/css';
+        $event->rules['scss/<action:.+>.css'] = 'pitch/scss';
+        $event->rules['js/<action:.+>.js'] = 'pitch/js';
+      }
+    );
 
-        Event::on(
-            Plugins::class,
-            Plugins::EVENT_AFTER_INSTALL_PLUGIN,
-            function (PluginEvent $event){
-                if ($event->plugin === $this) {
-                }
-            }
-        );
+    Event::on(
+      UrlManager::class,
+      UrlManager::EVENT_REGISTER_CP_URL_RULES,
+      function (RegisterUrlRulesEvent $event){
+        $event->rules['pitch/clear'] = 'pitch/cache/clear-cache';
+      }
+    );
 
-        Craft::info(
-            Craft::t(
-                'pitch',
-                '{name} plugin loaded',
-                ['name' => $this->name]
-            ),
-            __METHOD__
-        );
-    }
-    
-    public function afterSaveSettings(){
-      parent::afterSaveSettings();
-      $this->clearCache();
-    }
-    
-    public function clearCache(){
-      $cacheDir = (isset($this->settings->cacheDir{0})) ? $this->settings->cacheDir : '@storage/pitch';
-      $cacheFolderPath = FileHelper::normalizePath(
-        Craft::parseEnv($cacheDir)
-      ).'/';
-      
-        $files = glob($cacheFolderPath.'*');
-        foreach($files as $file){
-          if(is_file($file)){
-            unlink($file);
-          }
+    Event::on(
+      Plugins::class,
+      Plugins::EVENT_AFTER_INSTALL_PLUGIN,
+      function (PluginEvent $event){
+        if ($event->plugin === $this) {
         }
-        
-      Craft::$app->response
-          ->redirect(UrlHelper::url('settings/plugins/pitch'))
-          ->send();
+      }
+    );
+
+    Craft::info(
+      Craft::t(
+        'pitch',
+        '{name} plugin loaded',
+        ['name' => $this->name]
+      ),
+      __METHOD__
+    );
+  }
+
+  public function afterSaveSettings(){
+    parent::afterSaveSettings();
+    $this->clearCache();
+  }
+
+  public function clearCache(){
+    $cacheDir = (isset($this->settings->cacheDir{0})) ? $this->settings->cacheDir : '@storage/pitch';
+    $cacheFolderPath = FileHelper::normalizePath(
+      Craft::parseEnv($cacheDir)
+    ).'/';
+
+    $files = glob($cacheFolderPath.'*');
+    foreach($files as $file){
+      if(is_file($file)){
+        unlink($file);
+      }
     }
 
-    // Protected Methods
-    // =========================================================================
+    Craft::$app->response
+    ->redirect(UrlHelper::url('settings/plugins/pitch'))
+    ->send();
+  }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createSettingsModel(){
-        return new Settings();
-    }
+  // Protected Methods
+  // =========================================================================
 
-    /**
-     * @inheritdoc
-     */
-    protected function settingsHtml(): string {
-        return Craft::$app->view->renderTemplate(
-            'pitch/settings',
-            [
-                'settings' => $this->getSettings()
-            ]
-        );
-    }
-    
+  /**
+   * @inheritdoc
+   */
+  protected function createSettingsModel(){
+    return new Settings();
+  }
+
+  /**
+   * @inheritdoc
+   */
+  protected function settingsHtml(): string {
+    return Craft::$app->view->renderTemplate(
+      'pitch/settings',
+      [
+      'settings' => $this->getSettings()
+      ]
+    );
+  }
+
 }

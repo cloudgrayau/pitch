@@ -20,45 +20,45 @@ use yii\web\NotFoundHttpException;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.0
+ * @since     1.0.1
  */
 class ScssController extends Controller {
 
-    // Protected Properties
-    // =========================================================================
+  // Protected Properties
+  // =========================================================================
 
-    /**
-     * @var    bool|array Allows anonymous access to this controller's actions.
-     *         The actions must be in 'kebab-case'
-     * @access protected
-     */
-    protected $allowAnonymous = ['index'];
+  /**
+   * @var    bool|array Allows anonymous access to this controller's actions.
+   *         The actions must be in 'kebab-case'
+   * @access protected
+   */
+  protected $allowAnonymous = ['index'];
 
-    // Public Methods
-    // =========================================================================
+  // Public Methods
+  // =========================================================================
 
-    /**
-     * @return mixed
-     */
-    public function actionIndex(){
-      Paths::doInit();      
-      $output = Paths::$output;
-      array_pop($output);
-      $string = implode('/', $output);
-      if (($val = stripos($string, ',')) && ($val !== false)){
-        $url = implode('/', Paths::$output);
-        $dir = explode('/', substr($url, 0, $val));
-        $original = array_pop($dir);
-        $dir = implode('/', $dir).'/';
-        $files = $original.','.substr($url, $val+1);   
-      } else {
-        $files = array_pop(Paths::$output);
-        $dir = implode('/', Paths::$output).'/';    
-      }      
-      if ($result = CssController::initSCSS($dir, $files, true)){
-        exit();
-      }
-      throw new NotFoundHttpException('Page not found.');
+  /**
+   * @return mixed
+   */
+  public function actionIndex(){
+    Paths::doInit();
+    $output = Paths::$output;
+    array_pop($output);
+    $string = implode('/', $output);
+    if (($val = stripos($string, ',')) && ($val !== false)){
+      $url = implode('/', Paths::$output);
+      $dir = explode('/', substr($url, 0, $val));
+      $original = array_pop($dir);
+      $dir = implode('/', $dir).'/';
+      $files = $original.','.substr($url, $val+1);
+    } else {
+      $files = array_pop(Paths::$output);
+      $dir = implode('/', Paths::$output).'/';
     }
+    if ($result = CssController::initSCSS($dir, $files, true)){
+      exit();
+    }
+    throw new NotFoundHttpException('Page not found.');
+  }
 
 }

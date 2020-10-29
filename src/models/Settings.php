@@ -18,41 +18,42 @@ use craft\base\Model;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.0
+ * @since     1.0.1
  */
 class Settings extends Model
 {
-    // Public Properties
-    // =========================================================================
+  // Public Properties
+  // =========================================================================
 
-    /**
-     * @var string
-     */
-    public $formatOptions = [
-      ['label' => 'Expanded', 'value' => 'Expanded'],
-      ['label' => 'Nested', 'value' => 'Nested'],
-      ['label' => 'Compressed', 'value' => 'Compressed'],
-      ['label' => 'Compact', 'value' => 'Compact'],
-      ['label' => 'Crunched', 'value' => 'Crunched']
+  /**
+   * @var string
+   */
+  public $formatOptions = [
+    ['label' => 'Expanded', 'value' => 'Expanded'],
+    ['label' => 'Nested', 'value' => 'Nested'],
+    ['label' => 'Compressed', 'value' => 'Compressed'],
+    ['label' => 'Compact', 'value' => 'Compact'],
+    ['label' => 'Crunched', 'value' => 'Crunched']
+  ];
+
+  public $useCache = true;
+  public $cacheDir = '';
+  public $cssFormat = 'Crunched';
+
+  // Public Methods
+  // =========================================================================
+
+  /**
+   * @inheritdoc
+   */
+  public function rules()
+  {
+    return [
+      [['cacheDir','cssFormat'], 'string'],
+      ['useCache', 'boolean'],
+      ['useCache', 'default', 'value' => true],
+      ['cssFormat', 'required'],
+      ['cssFormat', 'default', 'value' => 'Crunched'],
     ];
-    
-    public $useCache = false;
-    public $cacheDir = '';
-    public $cssFormat = 'Crunched';
-
-    // Public Methods
-    // =========================================================================
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['cacheDir','cssFormat'], 'string'],
-            ['useCache', 'boolean'],
-            ['cssFormat', 'required'],
-            ['cssFormat', 'default', 'value' => 'Crunched'],
-        ];
-    }
+  }
 }

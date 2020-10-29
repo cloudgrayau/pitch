@@ -18,13 +18,13 @@ use craft\base\Model;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.0
+ * @since     1.0.1
  */
 class Paths extends Model {
   public static $output = array();
   public static function doInit(){
-		$output = explode('/', Craft::$app->getRequest()->pathInfo);
-		array_shift($output);
-		self::$output = $output;
+    $output = explode('/', Craft::$app->getRequest()->pathInfo);
+    array_shift($output);
+    self::$output = $output;
   }
 }

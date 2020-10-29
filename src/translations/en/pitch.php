@@ -11,8 +11,8 @@
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.0
+ * @since     1.0.1
  */
 return [
-    'Pitch plugin loaded' => 'Pitch plugin loaded',
+  'Pitch plugin loaded' => 'Pitch plugin loaded',
 ];

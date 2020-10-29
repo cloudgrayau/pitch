@@ -18,25 +18,25 @@ use craft\base\Model;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.0
+ * @since     1.0.1
  */
 class Cached extends Model {
-  
+
   private static $dir = '';
   private $filename = null;
   private $tmp_file = null;
   private $cache = false;
-  
+
   function __construct($dir, $cache=false){
     self::$dir = $dir;
     $this->cache = $cache;
   }
-  
+
   final public function generateURL(){
     $parts = pathinfo($this->filename);
     return md5($this->filename).'.'.$parts['extension'];
   }
-  
+
   final public function cache($file='', $time=0, $mtime=0){
     if ($this->cache){
       $this->filename = $file;
@@ -46,7 +46,7 @@ class Cached extends Model {
           $expiry = ($time > 0) ? $time : 3600;
           $mod_time = filemtime(self::$dir.$this->tmp_file);
           if (($mtime <= $mod_time) && (($mod_time+$expiry) > $_SERVER['REQUEST_TIME'])){
-            include(self::$dir.$this->tmp_file);
+            readfile(self::$dir.$this->tmp_file);
             return true;
           }
         }
@@ -54,24 +54,24 @@ class Cached extends Model {
     }
     return false;
   }
-  
+
   final public function write(){
     if ($this->cache){
       $data = ob_get_contents();
       if (!empty($this->tmp_file)) {
         try {
           if ($fp = fopen(self::$dir.$this->tmp_file, 'wb')) {
-            @flock ($fp, LOCK_EX);
-      			fwrite ($fp, $data);
-      			@flock ($fp, LOCK_UN);
-      			fclose ($fp);
-    			}
+            @flock($fp, LOCK_EX);
+            fwrite($fp, $data);
+            @flock($fp, LOCK_UN);
+            fclose($fp);
+          }
         } catch (Exception $e) {
         }
       }
     }
   }
-  
+
   final public function dump(){
     if ($this->cache){
       ob_end_flush();
