@@ -1,0 +1,51 @@
+{#
+/**
+ * Pitch plugin for Craft CMS 3.x
+ *
+ * Pitch Settings.twig
+ *
+ * @author    Cloud Gray Pty Ltd
+ * @copyright Copyright (c) 2020 Cloud Gray Pty Ltd
+ * @link      https://cloudgray.com.au/
+ * @package   Pitch
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+<div id="settings">
+{{ forms.selectField({
+    label: "SCSS Formatter",
+    instructions: "The format for your compiled SCSS files.",
+    name: 'cssFormat',
+    options: settings['formatOptions'],
+    value: settings['cssFormat'],
+    required: true,
+}) }}
+{{ forms.lightswitchField({
+    label: "Enable Cache",
+    instructions: "Whether caching should be enabled.",
+    name: 'useCache',
+    on: settings.useCache,
+}) }}
+{{ forms.autosuggestField({
+    label: "Cache Storage Path",
+    instructions: "The path to your cache folder.",
+    suggestEnvVars: true,
+    suggestAliases: true,
+    name: 'cacheDir',
+    value: settings['cacheDir'],
+    placeholder: '@storage/pitch',
+    required: false,
+}) }}
+  <div data-js="clear-button">
+    <a data-js="clear-cache" class="btn submit">Clear Cache</a>
+  </div>
+</div>
+{% js %}
+$(document).ready(function() { 
+  $(document).on('click', '[data-js="clear-cache"]', function() {
+    window.location.href = '{{ cpUrl('pitch/clear') }}';
+  });
+});
+{% endjs %}
