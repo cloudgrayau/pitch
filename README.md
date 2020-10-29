@@ -66,7 +66,7 @@ Whilst in development mode, the browser cache of all assets will be forced to re
 
 ## Templating
 
-In SCSS, `$baseUrl` refers to the relative `@web` directory (no trailing slash).
-In JS, `$baseUrl` refers to the relative `@web` directory (no trailing slash).
+- In SCSS, `$baseUrl` refers to the relative `@web` directory (no trailing slash).
+- In JS, `$baseUrl` refers to the relative `@web` directory (no trailing slash).
 
 Brought to you by [Cloud Gray Pty Ltd](https://cloudgray.com.au/)
