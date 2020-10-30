@@ -55,7 +55,7 @@ class ScssController extends Controller {
       $files = array_pop(Paths::$output);
       $dir = implode('/', Paths::$output).'/';
     }
-    if ($result = CssController::initSCSS($dir, $files, true)){
+    if ($result = CssController::initSCSS($dir, $files)){
       exit();
     }
     throw new NotFoundHttpException('Page not found.');

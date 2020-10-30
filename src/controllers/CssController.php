@@ -67,10 +67,10 @@ class CssController extends Controller {
   }
 
   public static function initSCSS($dir, $files){
-    return self::initCSS($dir, $files, true);
+    return self::initCSS($dir, $files, 'scss');
   }
 
-  private static function initCSS($dir, $files, $scss=false){
+  private static function initCSS($dir, $files, $format='css'){
     $webroot = Craft::getAlias('@webroot').'/';
     $settings = Pitch::getInstance()->settings;
     $ext = strrchr($files,'.');
@@ -83,7 +83,7 @@ class CssController extends Controller {
       if (($pos !== false) && (ctype_digit(substr($file, $pos+1)))){
         $file = substr($file, 0, $pos);
       }
-      $file = $dir.$file.'.css';
+      $file = $dir.$file.'.'.$format;
       if (file_exists($webroot.$file)){
         ++$count;
         $mtime = filemtime($webroot.$file);
@@ -121,16 +121,19 @@ class CssController extends Controller {
     }
     $c = new Cached($cacheFolderPath, $settings->useCache);
     if (!$c->cache(Craft::$app->getRequest()-> fullPath, $offset, $filemtime)){
-      if ($scss){
-        $scss = new Compiler();
-        $scss->setImportPaths($webroot.$dir);
-        $scss->setVariables(array(
-          'baseUrl' => Craft::$app->getRequest()->baseUrl,
-        ));
-        $scss->setFormatter('ScssPhp\ScssPhp\Formatter\\'.$settings->cssFormat);
-        echo $scss->compile($css);
-      } else {
-        echo Minify::minifyCSS($css);
+      switch($format){
+        case 'scss':
+          $scss = new Compiler();
+          $scss->setImportPaths($webroot.$dir);
+          $scss->setVariables(array(
+            'baseUrl' => Craft::$app->getRequest()->baseUrl,
+          ));          
+          $scss->setFormatter('ScssPhp\ScssPhp\Formatter\\'.$settings->cssFormat);
+          echo $scss->compile($css);
+          break;
+        default:
+          echo Minify::minifyCSS($css);
+          break;
       }
       $c->write();
     }

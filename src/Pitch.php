@@ -88,15 +88,6 @@ class Pitch extends Plugin {
       }
     );
 
-    Event::on(
-      Plugins::class,
-      Plugins::EVENT_AFTER_INSTALL_PLUGIN,
-      function (PluginEvent $event){
-        if ($event->plugin === $this) {
-        }
-      }
-    );
-
     Craft::info(
       Craft::t(
         'pitch',

@@ -48,19 +48,25 @@ Caching can be enabled (recommended) and the cache directory can be customised. 
 
 To merge files, use commas (this will merge the included files based on the directory location of the original file).
 
-For example, **`scss/assets/style,chosen,plugin/owl.css`** will merge the following files and parse via SCSS:
+**SCSS** - For example, `'scss/assets/style,chosen,plugin/owl.css'` will merge the following files and parse via SCSS:
 
-- /CRAFT/web/assets/style.css
-- /CRAFT/web/assets/chosen.css
-- /CRAFT/web/assets/plugin/owl.css
+- `/CRAFT/web/assets/style.scss`
+- `/CRAFT/web/assets/chosen.scss`
+- `/CRAFT/web/assets/plugin/owl.scss`
 
-For example, **`js/assets/site,plugin/chosen,plugin/test.js`** will merge the following files and minify the JavaScript:
+**CSS** - For example, `'css/assets/style,chosen,plugin/owl.css'` will merge the following files and minify the CSS:
 
-- /CRAFT/web/assets/site.js
-- /CRAFT/web/assets/plugin/chosen.js
-- /CRAFT/web/assets/plugin/test.js
+- `/CRAFT/web/assets/style.css`
+- `/CRAFT/web/assets/chosen.css`
+- `/CRAFT/web/assets/plugin/owl.css`
 
-You can also force the browser to re-cache asset files by using `:DIGIT` in the asset URL prior to the extension, for example **`js/assets/site,plugin/chosen:01.js`**.
+**JS** - For example, `'js/assets/site,plugin/chosen,plugin/test.js'` will merge the following files and minify the JavaScript:
+
+- `/CRAFT/web/assets/site.js`
+- `/CRAFT/web/assets/plugin/chosen.js`
+- `/CRAFT/web/assets/plugin/test.js`
+
+You can also force the browser to re-cache asset files by using `:DIGIT` in the asset URL prior to the extension, for example `'js/assets/site,plugin/chosen:01.js'`.
 
 Whilst in development mode, the browser cache of all assets will be forced to refresh on each page load.
 
