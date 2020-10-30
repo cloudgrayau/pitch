@@ -42,7 +42,7 @@ Caching can be enabled (recommended) and the cache directory can be customised. 
 
 ## Using Pitch
 
-- **SCSS** - `{% do view.registerCssFile(url('scss/FILENAME.css')) %}`
+- **SCSS** - `{% do view.registerCssFile(url('scss/FILENAME.scss')) %}`
 - **CSS** - `{% do view.registerCssFile(url('css/FILENAME.css')) %}`
 - **JS** - `{% do view.registerJsFile(url('js/FILENAME.js')) %}`
 
