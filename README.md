@@ -48,19 +48,19 @@ Caching can be enabled (recommended) and the cache directory can be customised. 
 
 To merge files, use commas (this will merge the included files based on the directory location of the original file).
 
-**SCSS** - For example, `'scss/assets/style,chosen,plugin/owl.css'` will merge and parse via SCSS:
+**SCSS** - For example, `'scss/assets/style,chosen,plugin/owl.css'` will merge and compile the following SCSS:
 
 - `/CRAFT/web/assets/style.scss`
 - `/CRAFT/web/assets/chosen.scss`
 - `/CRAFT/web/assets/plugin/owl.scss`
 
-**CSS** - For example, `'css/assets/style,chosen,plugin/owl.css'` will merge and minify the CSS:
+**CSS** - For example, `'css/assets/style,chosen,plugin/owl.css'` will merge and minify the following CSS:
 
 - `/CRAFT/web/assets/style.css`
 - `/CRAFT/web/assets/chosen.css`
 - `/CRAFT/web/assets/plugin/owl.css`
 
-**JS** - For example, `'js/assets/site,plugin/chosen,plugin/test.js'` will merge and minify the JavaScript:
+**JS** - For example, `'js/assets/site,plugin/chosen,plugin/test.js'` will merge and minify the following JavaScript:
 
 - `/CRAFT/web/assets/site.js`
 - `/CRAFT/web/assets/plugin/chosen.js`
