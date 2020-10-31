@@ -1,0 +1,59 @@
+@import '_settings.scss';
+
+/* 
+  -------
+  
+    STYLE.SCSS
+  
+  -------
+*/
+html {
+  margin:0;
+  padding:0;
+  height:100%;
+}
+
+body {
+  margin:0;
+  padding:15px 24px 25px;
+  font-family:Arial,sans-serif;
+  font-size:14px;
+  font-weight:400;
+  background:$white;
+  color:$black;
+}
+
+pre {
+  margin:15px 0;
+}
+
+a {
+  outline:none!important;
+  &:link,&:visited,&:active {
+    color:$blue;
+    text-decoration:underline;
+  }
+  &:hover {
+    color:$black;
+    text-decoration:underline;
+  }	
+}
+
+p {
+  margin:10px 0;
+}
+
+pre {
+  margin:10px 0 0;
+  background:$grey;
+  padding:7px;
+  display:inline-block;
+  font-size:13px;
+}
+
+hr {
+  background:rgba(0,0,0,0.4);
+  border:0;
+  height:1px;
+  margin:25px 0;
+}

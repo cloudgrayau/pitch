@@ -1,0 +1,39 @@
+{% do view.registerCssFile(url('scss/pitchassets/scss/style,headings.scss')) %}
+{% do view.registerJsFile(url('//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js')) %}
+{% do view.registerJsFile(url('js/pitchassets/js/script,onload/load.js')) %}
+<html lang="en">
+<head>
+ <meta charset="utf-8" />
+ <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+ <meta name="author" content="Cloud Gray Pty Ltd" />
+ <title>Craft CMS - Pitch Examples</title>
+</head>
+<body>
+<h1>Pitch Examples</h1>
+<hr />
+<h2>SCSS</h2>
+<p><strong>Original file</strong><br /><a href="{{ siteUrl('pitchassets/scss/style.scss') }}" target="_blank">{{ siteUrl('pitchassets/scss/style.scss') }}</a></p>
+<p><strong>Pitch (compiled)</strong><br /><a href="{{ siteUrl('scss/pitchassets/scss/style.scss') }}" target="_blank">{{ siteUrl('scss/pitchassets/scss/style.scss') }}</a></p>
+<pre>{{ '{% do view.registerCssFile(url(\'scss/pitchassets/scss/style.scss\')) %}' }}</pre>
+<p><br /><strong>Original files</strong><br /><a href="{{ siteUrl('pitchassets/scss/style.scss') }}" target="_blank">{{ siteUrl('pitchassets/scss/style.scss') }}</a><br /><a href="{{ siteUrl('pitchassets/scss/headings.scss') }}" target="_blank">{{ siteUrl('pitchassets/scss/headings.scss') }}</a></p>
+<p><strong>Pitch (merged and compiled)</strong><br /><a href="{{ siteUrl('scss/pitchassets/scss/style,headings.scss') }}" target="_blank">{{ siteUrl('scss/pitchassets/scss/style,headings.scss') }}</a></p>
+<pre>{{ '{% do view.registerCssFile(url(\'scss/pitchassets/scss/style,headings.scss\')) %}' }}</pre>
+<hr />
+<h2>CSS</h2>
+<p><strong>Original file</strong><br /><a href="{{ siteUrl('pitchassets/css/style.css') }}" target="_blank">{{ siteUrl('pitchassets/css/style.css') }}</a></p>
+<p><strong>Pitch (minified)</strong><br /><a href="{{ siteUrl('css/pitchassets/css/style.css') }}" target="_blank">{{ siteUrl('css/pitchassets/css/style.css') }}</a></p>
+<pre>{{ '{% do view.registerCssFile(url(\'css/pitchassets/css/style.css\')) %}' }}</pre>
+<p><br /><strong>Original files</strong><br /><a href="{{ siteUrl('pitchassets/css/style.css') }}" target="_blank">{{ siteUrl('pitchassets/css/style.css') }}</a><br /><a href="{{ siteUrl('pitchassets/css/headings.css') }}" target="_blank">{{ siteUrl('pitchassets/css/headings.css') }}</a></p>
+<p><strong>Pitch (merged and minified)</strong><br /><a href="{{ siteUrl('css/pitchassets/css/style,headings.css') }}" target="_blank">{{ siteUrl('css/pitchassets/css/style,headings.css') }}</a></p>
+<pre>{{ '{% do view.registerCssFile(url(\'css/pitchassets/css/style,headings.css\')) %}' }}</pre>
+<hr />
+<h2>JS</h2>
+<p><strong>Original file</strong><br /><a href="{{ siteUrl('pitchassets/js/script.js') }}" target="_blank">{{ siteUrl('pitchassets/js/script.js') }}</a></p>
+<p><strong>Pitch (minified)</strong><br /><a href="{{ siteUrl('js/pitchassets/js/script.js') }}" target="_blank">{{ siteUrl('js/pitchassets/js/script.js') }}</a></p>
+<pre>{{ '{% do view.registerJsFile(url(\'js/pitchassets/js/script.js\')) %}' }}</pre>
+<p><br /><strong>Original files</strong><br /><a href="{{ siteUrl('pitchassets/js/script.js') }}" target="_blank">{{ siteUrl('pitchassets/js/script.js') }}</a><br /><a href="{{ siteUrl('pitchassets/js/onload/load.js') }}" target="_blank">{{ siteUrl('pitchassets/js/onload/load.js') }}</a></p>
+<p><strong>Pitch (merged and minified)</strong><br /><a href="{{ siteUrl('js/pitchassets/js/script,onload/load.js') }}" target="_blank">{{ siteUrl('js/pitchassets/js/script,onload/load.js') }}</a></p>
+<pre>{{ '{% do view.registerJsFile(url(\'js/pitchassets/js/script,onload/load.js\')) %}' }}</pre>
+<hr />
+</body>
+</html>

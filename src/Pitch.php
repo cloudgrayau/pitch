@@ -76,6 +76,7 @@ class Pitch extends Plugin {
       function (RegisterUrlRulesEvent $event){
         $event->rules['css/<action:.+>.css'] = 'pitch/css';
         $event->rules['scss/<action:.+>.css'] = 'pitch/scss';
+        $event->rules['scss/<action:.+>.scss'] = 'pitch/scss';
         $event->rules['js/<action:.+>.js'] = 'pitch/js';
       }
     );

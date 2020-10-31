@@ -42,29 +42,61 @@ Caching can be enabled (recommended) and the cache directory can be customised. 
 
 ## Using Pitch
 
-- **SCSS** - `{% do view.registerCssFile(url('scss/FILENAME.css')) %}`
+- **SCSS** - `{% do view.registerCssFile(url('scss/FILENAME.scss')) %}`
 - **CSS** - `{% do view.registerCssFile(url('css/FILENAME.css')) %}`
 - **JS** - `{% do view.registerJsFile(url('js/FILENAME.js')) %}`
 
-To merge files, use commas (this will merge the included files based on the directory location of the original file).
+For [example files](https://github.com/cloudgrayau/pitch/tree/main/examples), please browse to the `/vendor/cloudgrayau/pitch/examples/` directory for installation.
 
-**SCSS** - For example, `'scss/assets/style,chosen,plugin/owl.css'` will merge and compile the following SCSS:
+## Merging & Loading Files
+
+### SCSS ###
+
+`{% do view.registerCssFile(url('scss/style.scss')) %}` will load and compile the following SCSS file:
+
+- `/CRAFT/web/style.scss`
+
+`{% do view.registerCssFile(url('scss/assets/style,chosen,plugin/owl.scss')) %}` will merge and compile the following SCSS files:
 
 - `/CRAFT/web/assets/style.scss`
 - `/CRAFT/web/assets/chosen.scss`
 - `/CRAFT/web/assets/plugin/owl.scss`
 
-**CSS** - For example, `'css/assets/style,chosen,plugin/owl.css'` will merge and minify the following CSS:
+All files being merged will need to have the `.scss` extension.
+
+--------
+
+### CSS ###
+
+`{% do view.registerCssFile(url('css/style.css')) %}` will load and minify the following CSS file:
+
+- `/CRAFT/web/style.css`
+
+`{% do view.registerCssFile(url('css/assets/style,chosen,plugin/owl.css')) %}` will merge and minify the following CSS files:
 
 - `/CRAFT/web/assets/style.css`
 - `/CRAFT/web/assets/chosen.css`
 - `/CRAFT/web/assets/plugin/owl.css`
 
-**JS** - For example, `'js/assets/site,plugin/chosen,plugin/test.js'` will merge and minify the following JavaScript:
+All files being merged will need to have the `.css` extension.
 
-- `/CRAFT/web/assets/site.js`
-- `/CRAFT/web/assets/plugin/chosen.js`
-- `/CRAFT/web/assets/plugin/test.js`
+--------
+
+### JS ###
+
+`{% do view.registerJsFile(url('js/script.js')) %}` will load and minify the following JS file:
+
+- `/CRAFT/web/script.js`
+
+`{% do view.registerJsFile(url('js/assets/script,chosen,plugin/owl.js')) %}` will merge and minify the following JS files:
+
+- `/CRAFT/web/assets/script.js`
+- `/CRAFT/web/assets/chosen.js`
+- `/CRAFT/web/assets/plugin/owl.js`
+
+All files being merged will need to have the `.js` extension.
+
+--------
 
 You can also force the browser to re-cache asset files by using `:DIGIT` in the asset URL prior to the extension, for example `'js/assets/site,plugin/chosen:01.js'`.
 
