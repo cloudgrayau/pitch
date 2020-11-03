@@ -34,8 +34,8 @@ class Settings extends Model
   ];
 
   public $cssFormat = 'Compressed';
-  public $minifyFiles = true;
-  public $useCache = true;
+  public $minifyFiles = false;
+  public $useCache = false;
   public $cacheDir = '';
   
 
