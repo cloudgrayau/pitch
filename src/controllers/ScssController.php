@@ -20,7 +20,7 @@ use yii\web\NotFoundHttpException;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.1
+ * @since     1.0.4
  */
 class ScssController extends Controller {
 

@@ -23,7 +23,8 @@
  */
 
 return [
-  'cssFormat' => 'Crunched',
+  'cssFormat' => 'Compressed',
+  'minifyFiles' => true,
   'useCache' => true,
   'cacheDir' => '@storage/pitch',
 ];

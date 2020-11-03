@@ -11,7 +11,7 @@
         "pitch"
     ],
     "support": {
-        "docs": "https://github.com/cloudgrayau/pitch/blob/master/README.md",
+        "docs": "https://github.com/cloudgrayau/pitch/blob/main/README.md",
         "issues": "https://github.com/cloudgrayau/pitch/issues"
     },
     "license": "MIT",
@@ -35,8 +35,8 @@
         "handle": "pitch",
         "developer": "Cloud Gray Pty Ltd",
         "developerUrl": "https://cloudgray.com.au/",
-        "documentationUrl": "https://github.com/cloudgrayau/pitch/blob/master/README.md",
-        "changelogUrl": "https://raw.githubusercontent.com/cloudgrayau/pitch/master/CHANGELOG.md",
+        "documentationUrl": "https://github.com/cloudgrayau/pitch/blob/main/README.md",
+        "changelogUrl": "https://raw.githubusercontent.com/cloudgrayau/pitch/main/CHANGELOG.md",
         "class": "cloudgrayau\\pitch\\Pitch"
     }
 }

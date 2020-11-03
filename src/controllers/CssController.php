@@ -25,7 +25,7 @@ use ScssPhp\ScssPhp\Compiler;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.1
+ * @since     1.0.4
  */
 class CssController extends Controller {
 
@@ -112,7 +112,7 @@ class CssController extends Controller {
     header('Expires: ' .gmdate('D, d M Y H:i:s',$filemtime + $offset) . ' GMT');
     header('Link: <'.$_SERVER['REQUEST_URI'].'>; rel=preload; as=style;');
     header('Connection: keep-alive');
-    $cacheDir = (isset($settings->cacheDir{0})) ? $settings->cacheDir : '@storage/pitch';
+    $cacheDir = (!empty($settings->cacheDir)) ? $settings->cacheDir : '@storage/pitch';
     $cacheFolderPath = FileHelper::normalizePath(
       Craft::parseEnv($cacheDir)
     ).'/';
@@ -132,7 +132,11 @@ class CssController extends Controller {
           echo $scss->compile($css);
           break;
         default:
-          echo Minify::minifyCSS($css);
+          if ($settings->minifyFiles){
+            echo Minify::minifyCSS($css);
+          } else {
+            echo $css;
+          }
           break;
       }
       $c->write();

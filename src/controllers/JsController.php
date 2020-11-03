@@ -23,7 +23,7 @@ use yii\web\NotFoundHttpException;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.1
+ * @since     1.0.4
  */
 class JsController extends Controller {
 
@@ -106,7 +106,7 @@ class JsController extends Controller {
     header('Expires: ' .gmdate('D, d M Y H:i:s',$filemtime + $offset) . ' GMT');
     header('Link: <'.$_SERVER['REQUEST_URI'].'>; rel=preload; as=script;');
     header('Connection: keep-alive');
-    $cacheDir = (isset($settings->cacheDir{0})) ? $settings->cacheDir : '@storage/pitch';
+    $cacheDir = (!empty($settings->cacheDir)) ? $settings->cacheDir : '@storage/pitch';
     $cacheFolderPath = FileHelper::normalizePath(
       Craft::parseEnv($cacheDir)
     ).'/';
@@ -115,7 +115,11 @@ class JsController extends Controller {
     }
     $c = new Cached($cacheFolderPath, $settings->useCache);
     if (!$c->cache(Craft::$app->getRequest()-> fullPath, $offset, $filemtime)){
-      echo Minify::minifyJS(str_replace('$baseUrl', Craft::$app->getRequest()->baseUrl, $js));
+      if ($settings->minifyFiles){
+        echo Minify::minifyJS(str_replace('$baseUrl', Craft::$app->getRequest()->baseUrl, $js));
+      } else {
+        echo str_replace('$baseUrl', Craft::$app->getRequest()->baseUrl, $js);
+      }
       $c->write();
     }
     header('Etag: '.sprintf('"%s-%s"',$filemtime,md5(ob_get_contents())));

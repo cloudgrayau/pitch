@@ -18,7 +18,7 @@ use craft\base\Model;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.1
+ * @since     1.0.4
  */
 class Settings extends Model
 {
@@ -30,15 +30,14 @@ class Settings extends Model
    */
   public $formatOptions = [
     ['label' => 'Expanded', 'value' => 'Expanded'],
-    ['label' => 'Nested', 'value' => 'Nested'],
     ['label' => 'Compressed', 'value' => 'Compressed'],
-    ['label' => 'Compact', 'value' => 'Compact'],
-    ['label' => 'Crunched', 'value' => 'Crunched']
   ];
 
+  public $cssFormat = 'Compressed';
+  public $minifyFiles = true;
   public $useCache = true;
   public $cacheDir = '';
-  public $cssFormat = 'Crunched';
+  
 
   // Public Methods
   // =========================================================================
@@ -50,10 +49,11 @@ class Settings extends Model
   {
     return [
       [['cacheDir','cssFormat'], 'string'],
-      ['useCache', 'boolean'],
-      ['useCache', 'default', 'value' => true],
+      [['minifyFiles', 'useCache'], 'boolean'],
       ['cssFormat', 'required'],
-      ['cssFormat', 'default', 'value' => 'Crunched'],
+      ['cssFormat', 'default', 'value' => 'Compressed'],
+      ['minifyFiles', 'default', 'value' => true],
+      ['useCache', 'default', 'value' => true],
     ];
   }
 }

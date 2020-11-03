@@ -2,6 +2,14 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
+## 1.0.4 - 2020-11-03
+### Added
+- Added CSS/JS minify setting
+### Changed
+- Updated SCSS formatter options (Scssphp 1.4)
+### Fixed
+- PHP 7.4 compliance
+
 ## 1.0.3 - 2020-10-31
 ### Added
 - Added `example` files
@@ -26,4 +34,3 @@ Release notes for the Pitch Craft CMS plugin.
 ## 1.0.0 - 2020-10-29
 ### Added
 - Initial release
-

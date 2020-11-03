@@ -30,7 +30,7 @@ use yii\base\Event;
  *
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.1
+ * @since     1.0.4
  *
  */
 class Pitch extends Plugin {
@@ -105,7 +105,7 @@ class Pitch extends Plugin {
   }
 
   public function clearCache(){
-    $cacheDir = (isset($this->settings->cacheDir{0})) ? $this->settings->cacheDir : '@storage/pitch';
+    $cacheDir = (!empty($this->settings->cacheDir)) ? $this->settings->cacheDir : '@storage/pitch';
     $cacheFolderPath = FileHelper::normalizePath(
       Craft::parseEnv($cacheDir)
     ).'/';
