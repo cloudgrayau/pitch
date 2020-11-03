@@ -34,8 +34,8 @@ class Settings extends Model
   ];
 
   public $cssFormat = 'Compressed';
-  public $minifyFiles = false;
-  public $useCache = false;
+  public $minifyFiles = true;
+  public $useCache = true;
   public $cacheDir = '';
   
 
@@ -51,9 +51,7 @@ class Settings extends Model
       [['cacheDir','cssFormat'], 'string'],
       [['minifyFiles', 'useCache'], 'boolean'],
       ['cssFormat', 'required'],
-      ['cssFormat', 'default', 'value' => 'Compressed'],
-      ['minifyFiles', 'default', 'value' => true],
-      ['useCache', 'default', 'value' => true],
+      ['cssFormat', 'default', 'value' => 'Compressed']
     ];
   }
 }
