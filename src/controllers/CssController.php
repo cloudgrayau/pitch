@@ -25,7 +25,7 @@ use ScssPhp\ScssPhp\Compiler;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.4
+ * @since     1.0.6
  */
 class CssController extends Controller {
 
@@ -127,8 +127,18 @@ class CssController extends Controller {
           $scss->setImportPaths($webroot.$dir);
           $scss->setVariables(array(
             'baseUrl' => Craft::$app->getRequest()->baseUrl,
-          ));          
-          $scss->setFormatter('ScssPhp\ScssPhp\Formatter\\'.$settings->cssFormat);
+          ));
+          $format = $settings->cssFormat;
+          switch($format){ /* Depreciated scssphp 1.4 */
+            case 'Compact':
+            case 'Crunched':
+              $format = 'Compressed';
+              break;
+            case 'Nested':
+              $format = 'Expanded';
+              break;
+          }
+          $scss->setOutputStyle('ScssPhp\ScssPhp\Formatter\\'.$format);
           echo $scss->compile($css);
           break;
         default:
