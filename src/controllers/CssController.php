@@ -25,7 +25,7 @@ use ScssPhp\ScssPhp\Compiler;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.6
+ * @since     1.0.7
  */
 class CssController extends Controller {
 
