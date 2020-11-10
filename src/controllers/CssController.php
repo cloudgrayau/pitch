@@ -132,13 +132,15 @@ class CssController extends Controller {
           switch($format){ /* Depreciated scssphp 1.4 */
             case 'Compact':
             case 'Crunched':
-              $format = 'Compressed';
+            case 'Compressed':
+              $format = \ScssPhp\ScssPhp\OutputStyle::COMPRESSED;
               break;
             case 'Nested':
-              $format = 'Expanded';
+            case 'Expanded':
+              $format = \ScssPhp\ScssPhp\OutputStyle::EXPANDED;
               break;
           }
-          $scss->setOutputStyle('ScssPhp\ScssPhp\Formatter\\'.$format);
+          $scss->setOutputStyle($format);
           echo $scss->compile($css);
           break;
         default:
