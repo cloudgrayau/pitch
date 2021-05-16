@@ -28,10 +28,10 @@ Pitch is a plugin that allows for on the go SCSS compiling, CSS/JS minifying, me
 
 ## Configuring Pitch
 
-SCSS compiling uses the latest version of [ScssPhp](https://scssphp.github.io/) and two formatters are included:
+SCSS compiling uses the latest version of [ScssPhp](https://scssphp.github.io/) and two output styles are included:
 
-- `Formatter\Expanded`
-- `Formatter\Compressed` *(default)*
+- `EXPANDED`
+- `COMPRESSED` *(default)*
 
 CSS and JS minifying uses a custom basic minifier (which can be disabled via the settings).
 
