@@ -19,9 +19,11 @@ use craft\services\Plugins;
 use craft\events\PluginEvent;
 use craft\web\UrlManager;
 use craft\events\RegisterUrlRulesEvent;
+use craft\events\RegisterCacheOptionsEvent;
 
 use craft\helpers\FileHelper;
 use craft\helpers\UrlHelper;
+use craft\utilities\ClearCaches;
 
 use yii\base\Event;
 
@@ -30,7 +32,7 @@ use yii\base\Event;
  *
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.4
+ * @since     1.0.8
  *
  */
 class Pitch extends Plugin {
@@ -69,6 +71,18 @@ class Pitch extends Plugin {
   public function init(){
     parent::init();
     self::$plugin = $this;
+    
+    Event::on(ClearCaches::class, ClearCaches::EVENT_REGISTER_CACHE_OPTIONS,
+      function(RegisterCacheOptionsEvent $event) {
+        $event->options[] = [
+          'key' => 'pitch',
+          'label' => Craft::t('pitch', 'Pitch cache'),
+          'action' => function(){
+            self::$plugin->clearCache(true);
+          }
+        ];
+      }
+    );
 
     Event::on(
       UrlManager::class,
@@ -104,22 +118,22 @@ class Pitch extends Plugin {
     $this->clearCache();
   }
 
-  public function clearCache(){
+  public function clearCache($util=false){
     $cacheDir = (!empty($this->settings->cacheDir)) ? $this->settings->cacheDir : '@storage/pitch';
     $cacheFolderPath = FileHelper::normalizePath(
       Craft::parseEnv($cacheDir)
     ).'/';
-
     $files = glob($cacheFolderPath.'*');
     foreach($files as $file){
       if(is_file($file)){
         unlink($file);
       }
     }
-
-    Craft::$app->response
-    ->redirect(UrlHelper::url('settings/plugins/pitch'))
-    ->send();
+    if (!$util){
+      Craft::$app->response
+      ->redirect(UrlHelper::url('settings/plugins/pitch'))
+      ->send();
+    }
   }
 
   // Protected Methods
