@@ -25,7 +25,7 @@ use ScssPhp\ScssPhp\Compiler;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.7
+ * @since     1.0.8
  */
 class CssController extends Controller {
 
@@ -141,7 +141,7 @@ class CssController extends Controller {
               break;
           }
           $scss->setOutputStyle($format);
-          echo $scss->compile($css);
+          echo $scss->compileString($css)->getCss();
           break;
         default:
           if ($settings->minifyFiles){
