@@ -2,6 +2,12 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
+## 1.0.9 - 2021-05-18
+### Changed
+- Updated `scssphp/scssphp` to version 1.5.2
+### Fixed
+- Settings issue
+
 ## 1.0.8 - 2021-05-17
 ### Changed
 - Updated `scssphp/scssphp` to version 1.5
