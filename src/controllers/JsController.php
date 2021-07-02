@@ -23,7 +23,7 @@ use yii\web\NotFoundHttpException;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.4
+ * @since     1.1.0
  */
 class JsController extends Controller {
 
@@ -35,7 +35,7 @@ class JsController extends Controller {
    *         The actions must be in 'kebab-case'
    * @access protected
    */
-  protected $allowAnonymous = ['index'];
+  protected $allowAnonymous = ['index' => self::ALLOW_ANONYMOUS_LIVE | self::ALLOW_ANONYMOUS_OFFLINE];
 
   // Public Methods
   // =========================================================================
