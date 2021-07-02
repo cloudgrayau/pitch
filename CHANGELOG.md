@@ -2,7 +2,7 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
-## 1.1.0 - 2021-06-18
+## 1.1.0 - 2021-07-02
 ### Changed
 - Pitch will now work whilst the website is in offline mode.
 
