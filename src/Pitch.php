@@ -32,7 +32,7 @@ use yii\base\Event;
  *
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.8
+ * @since     1.1.1
  *
  */
 class Pitch extends Plugin {
@@ -102,15 +102,7 @@ class Pitch extends Plugin {
         $event->rules['pitch/clear'] = 'pitch/cache/clear-cache';
       }
     );
-
-    Craft::info(
-      Craft::t(
-        'pitch',
-        '{name} plugin loaded',
-        ['name' => $this->name]
-      ),
-      __METHOD__
-    );
+    
   }
 
   public function afterSaveSettings(){
