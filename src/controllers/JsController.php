@@ -23,7 +23,7 @@ use yii\web\NotFoundHttpException;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.1.0
+ * @since     1.2.0
  */
 class JsController extends Controller {
 
@@ -93,7 +93,7 @@ class JsController extends Controller {
     if ($count == 0){
       return false;
     }
-    $offset = 60*60*24*30;
+    $offset = ($settings->cacheDuration > 0) ? $settings->cacheDuration : 2592000;
     ob_start('ob_gzhandler');
     header('Content-Type: text/javascript; charset=utf-8');
     if (Craft::$app->getConfig()->general->devMode){
@@ -113,7 +113,7 @@ class JsController extends Controller {
     if (!is_dir($cacheFolderPath)){
       FileHelper::createDirectory($cacheFolderPath);
     }
-    $c = new Cached($cacheFolderPath, $settings->useCache);
+    $c = new Cached($cacheFolderPath, $settings->useCache, $settings->advancedCache);
     if (!$c->cache(Craft::$app->getRequest()-> fullPath, $offset, $filemtime)){
       if ($settings->minifyFiles){
         echo Minify::minifyJS(str_replace('$baseUrl', Craft::$app->getRequest()->baseUrl, $js));

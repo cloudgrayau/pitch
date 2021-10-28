@@ -35,7 +35,9 @@ SCSS compiling uses the latest version of [scssphp](https://scssphp.github.io/sc
 
 CSS and JS minifying uses a custom basic minifier (which can be disabled via the settings).
 
-Caching is enabled by default (recommended) and the cache directory can be customised. The cache can be cleared via the plugin settings page.
+Caching is enabled by default (recommended) and the cache directory and duration can be customised. The cache can be cleared via the plugin settings page.
+
+**Advanced Caching Mode** can also be enabled, which offers superior performance but requires server rewrites and changes to the default storage path. Advanced Caching Mode is not recommended for development environments. For instructions on how to setup Advanced Caching Mode, please refer to the [ADVANCED.md](https://github.com/cloudgrayau/pitch/tree/main/ADVANCED.md).
 
 ## Using Pitch
 
@@ -103,5 +105,15 @@ Whilst in development mode, the browser cache of all assets will be forced to re
 
 - In SCSS, `$baseUrl` refers to the relative `@web` directory (no trailing slash).
 - In JS, `$baseUrl` refers to the relative `@web` directory (no trailing slash).
+
+## Clearing Cache
+
+The Pitch cache can be cleared via the following methods:
+	
+1. Via the CraftCMS Settings => Pitch
+2. Via the CraftCMS Utilities => Caches
+3. Via the console:
+
+`./craft pitch/clear`
 
 Brought to you by [Cloud Gray Pty Ltd](https://cloudgray.com.au/)

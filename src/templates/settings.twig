@@ -1,17 +1,3 @@
-{#
-/**
- * Pitch plugin for Craft CMS 3.x
- *
- * Pitch Settings.twig
- *
- * @author    Cloud Gray Pty Ltd
- * @copyright Copyright (c) 2020 Cloud Gray Pty Ltd
- * @link      https://cloudgray.com.au/
- * @package   Pitch
- * @since     1.0.9
- */
-#}
-
 {% import "_includes/forms" as forms %}
 <div id="settings">
 {{ forms.selectField({
@@ -34,15 +20,30 @@
     name: 'useCache',
     on: settings.useCache,
 }) }}
+{{ forms.lightswitchField({
+    label: "Enable Advanced Caching",
+    instructions: "Whether advanced caching should be enabled. Offers superior performance but requires <a href=\"https://github.com/cloudgrayau/pitch/tree/main/ADVANCED.md\" target=\"_blank\">server rewrites</a> and changes to the <a href=\"https://github.com/cloudgrayau/pitch/tree/main/ADVANCED.md\" target=\"_blank\">default storage path</a>.<br /><em>Recommended for use in production environments. This setting is ignored if 'Enable Cache' is disabled.</em>",
+    name: 'advancedCache',
+    on: settings.advancedCache,
+}) }}
 {{ forms.autosuggestField({
     label: "Cache Storage Path",
-    instructions: "The path to your cache folder.",
+    instructions: "The path to your cache folder.<br /><em>'Enable Advanced Caching' requires the storage path to be set to a public location, for example '@webroot/pitch'.</em>",
     suggestEnvVars: true,
     suggestAliases: true,
     name: 'cacheDir',
     value: settings['cacheDir'],
     placeholder: '@storage/pitch',
     required: false,
+}) }}
+{{ forms.textField({
+    label: "Cache duration",
+    instructions: "The total amount of seconds to cache files.<br /><em>This setting is ignored if 'Enable Advanced Caching' is enabled and setup correctly.</em>",
+    name: 'cacheDuration',
+    value: settings['cacheDuration'],
+    placeholder: 2592000,
+    type: 'number',
+    min: 0,
 }) }}
   <div data-js="clear-button">
     <a data-js="clear-cache" class="btn submit">Clear Cache</a>

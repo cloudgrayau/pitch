@@ -2,6 +2,13 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
+## 1.2.0 - 2021-10-29
+- Added a console command to clear the Pitch cache `./craft pitch/clear`
+- Added a `Cache Duration` setting
+- Added an `Advanced Caching` setting that offers superior performance by bypassing PHP on subsequent Pitch requests. This mode requires additional configuration and is highly recommended for use on production environments
+- Added an [ADVANCED.md](https://github.com/cloudgrayau/pitch/tree/main/ADVANCED.md) readme file for instructions on setting up advanced caching mode
+- Pitch is now officially a year old, YAY
+
 ## 1.1.1 - 2021-10-11
 - Removed plugin loaded queue log
 - Updated `scssphp/scssphp` requirement to version 1.8.1

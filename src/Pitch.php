@@ -20,6 +20,7 @@ use craft\events\PluginEvent;
 use craft\web\UrlManager;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\RegisterCacheOptionsEvent;
+use craft\console\Application as ConsoleApplication;
 
 use craft\helpers\FileHelper;
 use craft\helpers\UrlHelper;
@@ -32,7 +33,7 @@ use yii\base\Event;
  *
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.1.1
+ * @since     1.2.0
  *
  */
 class Pitch extends Plugin {
@@ -71,6 +72,10 @@ class Pitch extends Plugin {
   public function init(){
     parent::init();
     self::$plugin = $this;
+    
+    if (Craft::$app instanceof ConsoleApplication) {
+      $this->controllerNamespace = 'cloudgrayau\pitch\console';
+    }
     
     Event::on(ClearCaches::class, ClearCaches::EVENT_REGISTER_CACHE_OPTIONS,
       function(RegisterCacheOptionsEvent $event) {
@@ -117,7 +122,9 @@ class Pitch extends Plugin {
     ).'/';
     $files = glob($cacheFolderPath.'*');
     foreach($files as $file){
-      if(is_file($file)){
+      if(is_dir($file)){
+        $this->deleteSub($file);
+      } else {
         unlink($file);
       }
     }
@@ -126,6 +133,19 @@ class Pitch extends Plugin {
       ->redirect(UrlHelper::url('settings/plugins/pitch'))
       ->send();
     }
+  }
+  
+  // Private Methods
+  // =========================================================================
+  private function deleteSub($dir){
+    foreach(glob($dir . '/*') as $file) {
+      if(is_dir($file)){
+        $this->deleteSub($file);
+      } else {
+        unlink($file);
+      }
+    }
+    rmdir($dir);
   }
 
   // Protected Methods

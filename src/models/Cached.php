@@ -18,7 +18,7 @@ use craft\base\Model;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.1
+ * @since     1.2.0
  */
 class Cached extends Model {
 
@@ -26,15 +26,24 @@ class Cached extends Model {
   private $filename = null;
   private $tmp_file = null;
   private $cache = false;
+  private $advanced = false;
 
-  function __construct($dir, $cache=false){
+  function __construct($dir, $cache=false, $advanced=false){
     self::$dir = $dir;
     $this->cache = $cache;
+    $this->advanced = $advanced;
   }
 
   final public function generateURL(){
     $parts = pathinfo($this->filename);
-    return md5($this->filename).'.'.$parts['extension'];
+    if ($this->advanced){
+      if (!file_exists(self::$dir.$parts['dirname'].'/')){
+        mkdir(self::$dir.$parts['dirname'].'/', 0777, true);
+      }
+      return $parts['dirname'].'/'.$parts['basename'];
+    } else {
+      return md5($this->filename).'.'.$parts['extension'];
+    }
   }
 
   final public function cache($file='', $time=0, $mtime=0){
@@ -61,9 +70,9 @@ class Cached extends Model {
       if (!empty($this->tmp_file)) {
         try {
           if ($fp = fopen(self::$dir.$this->tmp_file, 'wb')) {
-            @flock($fp, LOCK_EX);
+            flock($fp, LOCK_EX);
             fwrite($fp, $data);
-            @flock($fp, LOCK_UN);
+            flock($fp, LOCK_UN);
             fclose($fp);
           }
         } catch (Exception $e) {

@@ -18,7 +18,7 @@ use craft\base\Model;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.4
+ * @since     1.2.0
  */
 class Settings extends Model
 {
@@ -36,7 +36,9 @@ class Settings extends Model
   public $cssFormat = 'Compressed';
   public $minifyFiles = true;
   public $useCache = true;
+  public $advancedCache = false;
   public $cacheDir = '';
+  public $cacheDuration = 2592000;
   
 
   // Public Methods
@@ -49,9 +51,10 @@ class Settings extends Model
   {
     return [
       [['cacheDir','cssFormat'], 'string'],
-      [['minifyFiles', 'useCache'], 'boolean'],
+      [['minifyFiles', 'useCache', 'advancedCache'], 'boolean'],
+      ['cacheDuration', 'integer', 'min' => 0],
       ['cssFormat', 'required'],
-      ['cssFormat', 'default', 'value' => 'Compressed']
+      ['cssFormat', 'default', 'value' => 'Compressed'],
     ];
   }
 }
