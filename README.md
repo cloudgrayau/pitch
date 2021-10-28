@@ -35,7 +35,7 @@ SCSS compiling uses the latest version of [scssphp](https://scssphp.github.io/sc
 
 CSS and JS minifying uses a custom basic minifier (which can be disabled via the settings).
 
-Caching is enabled by default (recommended) and the cache directory and duration can be customised. The cache can be cleared via the plugin settings page.
+Caching is enabled by default (recommended) and the cache directory and duration can be customised. 
 
 ### Advanced Caching Mode
 
