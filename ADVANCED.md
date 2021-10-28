@@ -45,6 +45,11 @@ The following `.htaccess` rules are also highly recommended:
 	<IfModule mod_deflate.c>
   		AddOutputFilterByType DEFLATE text/css application/javascript
 	</IfModule>
+	<IfModule mod_expires.c>
+		ExpiresActive on
+		ExpiresByType application/javascript "access plus 1 month"
+  		ExpiresByType text/css "access plus 1 month"
+	</IfModule>
 
 A full example `.htaccess` is as follows:
 
@@ -76,6 +81,11 @@ A full example `.htaccess` is as follows:
 	</IfModule>
 	<IfModule mod_deflate.c>
   		AddOutputFilterByType DEFLATE text/css application/javascript
+	</IfModule>
+	<IfModule mod_expires.c>
+		ExpiresActive on
+		ExpiresByType application/javascript "access plus 1 month"
+  		ExpiresByType text/css "access plus 1 month"
 	</IfModule>
 	
 ## Nginx
