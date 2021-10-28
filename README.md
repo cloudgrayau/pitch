@@ -37,7 +37,7 @@ CSS and JS minifying uses a custom basic minifier (which can be disabled via the
 
 Caching is enabled by default (recommended) and the cache directory and duration can be customised. The cache can be cleared via the plugin settings page.
 
-**Advanced Caching Mode** can also be enabled, which offers superior performance but requires server rewrites and changes to the default storage path. Advanced Caching Mode is not recommended for development environments. For instructions on how to setup Advanced Caching Mode, please refer to the [ADVANCED.md](https://github.com/cloudgrayau/pitch/tree/main/ADVANCED.md).
+**Advanced Caching Mode** can also be enabled, which offers superior performance but requires server rewrites and changes to the default storage path. For instructions on how to setup Advanced Caching Mode, please refer to the [ADVANCED.md](https://github.com/cloudgrayau/pitch/tree/main/ADVANCED.md).
 
 ## Using Pitch
 
