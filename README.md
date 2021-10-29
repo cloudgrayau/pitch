@@ -39,7 +39,7 @@ Caching is enabled by default (recommended) and the cache directory and duration
 
 ### Advanced Caching Mode
 
-**Advanced Caching Mode** can also be enabled, which offers superior performance but requires server rewrites and changes to the default storage path. For instructions on how to setup Advanced Caching Mode, please refer to the [ADVANCED.md](https://github.com/cloudgrayau/pitch/tree/main/ADVANCED.md).
+**Advanced Caching Mode** can also be enabled, which offers superior performance but requires server rewrites and changes to the default storage path. For instructions on how to setup Advanced Caching Mode, please refer to the [ADVANCED.md](https://github.com/cloudgrayau/pitch/blob/main/ADVANCED.md).
 
 ## Using Pitch
 

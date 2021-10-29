@@ -24,31 +24,17 @@ The following `.htaccess` rewrite rules are required for advanced caching to loa
 *Please replace the `/pitch` part of the rewrite below with the updated path, if the cache storage path differs from the recommended path `@webroot/pitch`.*
 
  	# Pitch advanced cache rewrite
- 	RewriteRule ^(.*).(css|scss|js)$ - [E=FILENAME:$0]
   	RewriteCond %{DOCUMENT_ROOT}/pitch/%{REQUEST_URI} -s
   	RewriteCond %{REQUEST_METHOD} GET
   	RewriteRule .* /pitch/%{REQUEST_URI} [L]
   		
 The following `.htaccess` rules are also highly recommended:
 
-	<IfModule mod_headers.c>
-  		<FilesMatch "\.(css|scss)$">
-  			Header add Link "</%{FILENAME}e>; rel=preload; as=style;" env=FILENAME
-  		</FilesMatch>
-  		<FilesMatch "\.(js)$">
-  			Header add Link "</%{FILENAME}e>; rel=preload; as=script;" env=FILENAME
-  		</FilesMatch>
-	</IfModule>
 	<IfModule mod_mime.c>
   		AddType text/css scss
 	</IfModule>
 	<IfModule mod_deflate.c>
   		AddOutputFilterByType DEFLATE text/css application/javascript
-	</IfModule>
-	<IfModule mod_expires.c>
-		ExpiresActive on
-		ExpiresByType application/javascript "access plus 1 month"
-  		ExpiresByType text/css "access plus 1 month"
 	</IfModule>
 
 A full example `.htaccess` is as follows:
@@ -57,7 +43,6 @@ A full example `.htaccess` is as follows:
   		RewriteEngine On
   
  		# Pitch advanced cache rewrite
- 		RewriteRule ^(.*).(css|scss|js)$ - [E=FILENAME:$0]
   		RewriteCond %{DOCUMENT_ROOT}/pitch/%{REQUEST_URI} -s
   		RewriteCond %{REQUEST_METHOD} GET
   		RewriteRule .* /pitch/%{REQUEST_URI} [L]
@@ -68,24 +53,11 @@ A full example `.htaccess` is as follows:
   		RewriteCond %{REQUEST_URI} !^/(favicon\.ico|apple-touch-icon.*\.png)$ [NC]
   		RewriteRule (.+) index.php?p=$1 [QSA,L]
 	</IfModule>
-	<IfModule mod_headers.c>
-  		<FilesMatch "\.(css|scss)$">
-  			Header add Link "</%{FILENAME}e>; rel=preload; as=style;" env=FILENAME
-  		</FilesMatch>
-  		<FilesMatch "\.(js)$">
-  			Header add Link "</%{FILENAME}e>; rel=preload; as=script;" env=FILENAME
-  		</FilesMatch>
-	</IfModule>
 	<IfModule mod_mime.c>
   		AddType text/css scss
 	</IfModule>
 	<IfModule mod_deflate.c>
   		AddOutputFilterByType DEFLATE text/css application/javascript
-	</IfModule>
-	<IfModule mod_expires.c>
-		ExpiresActive on
-		ExpiresByType application/javascript "access plus 1 month"
-  		ExpiresByType text/css "access plus 1 month"
 	</IfModule>
 	
 ## Nginx
