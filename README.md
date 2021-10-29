@@ -114,8 +114,6 @@ The Pitch cache can be cleared via the following methods:
 	
 1. Via the CraftCMS Settings => Pitch
 2. Via the CraftCMS Utilities => Caches
-3. Via the console:
-
-`./craft pitch/clear`
+3. Via the console `./craft pitch/clear`
 
 Brought to you by [Cloud Gray Pty Ltd](https://cloudgray.com.au/)
