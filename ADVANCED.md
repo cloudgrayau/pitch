@@ -62,8 +62,19 @@ A full example `.htaccess` is as follows:
 	
 ## Nginx
 
-Coming soon.
+The following conf rules are required for advanced caching to load the generated files:
 
-*Can anyone help with a translation of the above `.htaccess` rules for Nginx?*
+*Please replace the `/pitch` part of the rewrite below with the updated path, if the cache storage path differs from the recommended path `@webroot/pitch`.*
+
+	# Pitch advanced cache rewrite
+	set $cache_path false;
+	if ($request_method = GET) {
+		set $cache_path /pitch/$host/$uri/$args;
+	}
+	location / {
+		try_files $cache_path $uri $uri/ /index.php?$query_string;
+	}
+
+*Can anyone help with the translation of the above `.htaccess` rules for Nginx?*
 
 Brought to you by [Cloud Gray Pty Ltd](https://cloudgray.com.au/)
