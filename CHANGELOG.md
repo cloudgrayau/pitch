@@ -3,7 +3,9 @@
 Release notes for the Pitch Craft CMS plugin.
 
 ## 2.0.0 - 2022-03-24
-- Craft 4 support
+- Craft 4 release
+
+## 1.2.1 - 2022-03-24
 - Updated `scssphp/scssphp` requirement to version 1.10.2
 
 ## 1.2.0 - 2021-10-29
