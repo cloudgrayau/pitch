@@ -1,6 +1,6 @@
 <?php
 /**
- * Pitch plugin for Craft CMS 3.x
+ * Pitch plugin for Craft CMS 4.x
  *
  * Advanced SCSS, minimized JS and asset cache loading for CraftCMS
  *
@@ -18,7 +18,7 @@ use yii\console\Controller;
  *
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.2.0
+ * @since     2.0.0
  *
  */
 class ClearController extends Controller

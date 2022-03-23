@@ -1,6 +1,6 @@
 <?php
 /**
- * Pitch plugin for Craft CMS 3.x
+ * Pitch plugin for Craft CMS 4.x
  *
  * Advanced SCSS, minimized JS and asset cache loading for CraftCMS
  *
@@ -33,7 +33,7 @@ use yii\base\Event;
  *
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.2.0
+ * @since     2.0.0
  *
  */
 class Pitch extends Plugin {
@@ -51,17 +51,17 @@ class Pitch extends Plugin {
   /**
    * @var string
    */
-  public $schemaVersion = '1.0.0';
+  public string $schemaVersion = '1.0.0';
 
   /**
    * @var bool
    */
-  public $hasCpSettings = true;
+  public bool $hasCpSettings = true;
 
   /**
    * @var bool
    */
-  public $hasCpSection = false;
+  public bool $hasCpSection = false;
 
   // Public Methods
   // =========================================================================
@@ -110,7 +110,7 @@ class Pitch extends Plugin {
     
   }
 
-  public function afterSaveSettings(){
+  public function afterSaveSettings(): void{
     parent::afterSaveSettings();
     $this->clearCache();
   }
@@ -154,14 +154,14 @@ class Pitch extends Plugin {
   /**
    * @inheritdoc
    */
-  protected function createSettingsModel(){
+  protected function createSettingsModel(): ?\craft\base\Model{
     return new Settings();
   }
 
   /**
    * @inheritdoc
    */
-  protected function settingsHtml(): string {
+  protected function settingsHtml(): ?string {
     return Craft::$app->view->renderTemplate(
       'pitch/settings',
       [

@@ -1,4 +1,4 @@
-# Pitch for Craft CMS 3
+# Pitch for Craft CMS 4
 
 On the go SCSS compiling, CSS/JS minifying, merging and caching.
 
@@ -6,7 +6,7 @@ On the go SCSS compiling, CSS/JS minifying, merging and caching.
 
 ## Requirements
 
-This plugin requires Craft CMS 3.0.0 or later.
+This plugin requires Craft CMS 4.0.0 or later.
 
 ## Installation
 

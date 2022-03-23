@@ -1,6 +1,6 @@
 <?php
 /**
- * Pitch plugin for Craft CMS 3.x
+ * Pitch plugin for Craft CMS 4.x
  *
  * On the go SCSS compiling, CSS/JS minifying, merging and caching.
  *
@@ -18,7 +18,7 @@ use craft\base\Model;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.0.1
+ * @since     2.0.0
  */
 class Minify extends Model {
 

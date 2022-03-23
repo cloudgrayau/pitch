@@ -1,6 +1,6 @@
 <?php
 /**
- * Pitch plugin for Craft CMS 3.x
+ * Pitch plugin for Craft CMS 4.x
  *
  * On the go SCSS compiling, CSS/JS minifying, merging and caching.
  *

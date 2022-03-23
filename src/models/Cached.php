@@ -1,6 +1,6 @@
 <?php
 /**
- * Pitch plugin for Craft CMS 3.x
+ * Pitch plugin for Craft CMS 4.x
  *
  * On the go SCSS compiling, CSS/JS minifying, merging and caching.
  *
@@ -18,15 +18,15 @@ use craft\base\Model;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.2.0
+ * @since     2.0.0
  */
 class Cached extends Model {
 
-  private static $dir = '';
-  private $filename = null;
-  private $tmp_file = null;
-  private $cache = false;
-  private $advanced = false;
+  private static string $dir = '';
+  private string $filename = '';
+  private string $tmp_file = '';
+  private bool $cache = false;
+  private bool $advanced = false;
 
   function __construct($dir, $cache=false, $advanced=false){
     self::$dir = $dir;

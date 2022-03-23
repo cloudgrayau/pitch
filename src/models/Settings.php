@@ -1,6 +1,6 @@
 <?php
 /**
- * Pitch plugin for Craft CMS 3.x
+ * Pitch plugin for Craft CMS 4.x
  *
  * On the go SCSS compiling, CSS/JS minifying, merging and caching.
  *
@@ -18,7 +18,7 @@ use craft\base\Model;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.2.0
+ * @since     2.0.0
  */
 class Settings extends Model
 {
@@ -33,12 +33,12 @@ class Settings extends Model
     ['label' => 'Compressed', 'value' => 'Compressed'],
   ];
 
-  public $cssFormat = 'Compressed';
-  public $minifyFiles = true;
-  public $useCache = true;
-  public $advancedCache = false;
-  public $cacheDir = '';
-  public $cacheDuration = 2592000;
+  public string $cssFormat = 'Compressed';
+  public bool $minifyFiles = true;
+  public bool $useCache = true;
+  public bool $advancedCache = false;
+  public string $cacheDir = '';
+  public int $cacheDuration = 2592000;
   
 
   // Public Methods
@@ -47,7 +47,7 @@ class Settings extends Model
   /**
    * @inheritdoc
    */
-  public function rules()
+  public function rules(): array
   {
     return [
       [['cacheDir','cssFormat'], 'string'],

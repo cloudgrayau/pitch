@@ -1,6 +1,6 @@
 <?php
 /**
- * Pitch plugin for Craft CMS 3.x
+ * Pitch plugin for Craft CMS 4.x
  *
  * On the go SCSS compiling, CSS/JS minifying, merging and caching.
  *
@@ -25,7 +25,7 @@ use ScssPhp\ScssPhp\Compiler;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.2.0
+ * @since     2.0.0
  */
 class CssController extends Controller {
 
@@ -37,7 +37,7 @@ class CssController extends Controller {
    *         The actions must be in 'kebab-case'
    * @access protected
    */
-  protected $allowAnonymous = ['index' => self::ALLOW_ANONYMOUS_LIVE | self::ALLOW_ANONYMOUS_OFFLINE];
+  protected array|bool|int $allowAnonymous = ['index' => self::ALLOW_ANONYMOUS_LIVE | self::ALLOW_ANONYMOUS_OFFLINE];
 
   // Public Methods
   // =========================================================================

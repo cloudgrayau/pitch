@@ -1,6 +1,6 @@
 <?php
 /**
- * Pitch plugin for Craft CMS 3.x
+ * Pitch plugin for Craft CMS 4.x
  *
  * Advanced SCSS, minimized JS and asset cache loading for CraftCMS
  *
@@ -20,7 +20,7 @@ use yii\web\NotFoundHttpException;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     1.1.0
+ * @since     2.0.0
  */
 class ScssController extends Controller {
 
@@ -32,7 +32,7 @@ class ScssController extends Controller {
    *         The actions must be in 'kebab-case'
    * @access protected
    */
-  protected $allowAnonymous = ['index' => self::ALLOW_ANONYMOUS_LIVE | self::ALLOW_ANONYMOUS_OFFLINE];
+  protected array|bool|int $allowAnonymous = ['index' => self::ALLOW_ANONYMOUS_LIVE | self::ALLOW_ANONYMOUS_OFFLINE];
 
   // Public Methods
   // =========================================================================

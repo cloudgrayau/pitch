@@ -2,7 +2,7 @@
     "name": "cloudgrayau/pitch",
     "description": "On the go SCSS compiling, CSS/JS minifying, merging and caching.",
     "type": "craft-plugin",
-    "version": "1.2.0",
+    "version": "2.0.0",
     "keywords": [
         "craft",
         "cms",
@@ -22,8 +22,9 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^3.0.0",
-        "scssphp/scssphp": "^1.8.1"
+        "craftcms/cms": "^4.0",
+        "scssphp/scssphp": "^1.10.2",
+        "php": "^8.0"
     },
     "autoload": {
         "psr-4": {
