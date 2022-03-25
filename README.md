@@ -39,7 +39,7 @@ Caching is enabled by default (recommended) and the cache directory and duration
 
 ### Advanced Caching Mode
 
-**Advanced Caching Mode** can also be enabled, which offers superior performance but requires server rewrites and changes to the default storage path. For instructions on how to setup Advanced Caching Mode, please refer to the [ADVANCED.md](https://github.com/cloudgrayau/pitch/blob/main/ADVANCED.md).
+**Advanced Caching Mode** can also be enabled, which offers superior performance but requires server rewrites and changes to the default storage path. For instructions on how to setup Advanced Caching Mode, please refer to the [ADVANCED.md](https://github.com/cloudgrayau/pitch/blob/craft4/ADVANCED.md).
 
 ## Using Pitch
 
@@ -47,7 +47,7 @@ Caching is enabled by default (recommended) and the cache directory and duration
 - **CSS** - `{% do view.registerCssFile(url('css/FILENAME.css')) %}`
 - **JS** - `{% do view.registerJsFile(url('js/FILENAME.js')) %}`
 
-For [example files](https://github.com/cloudgrayau/pitch/tree/main/examples), please browse to the `/vendor/cloudgrayau/pitch/examples/` directory for installation.
+For [example files](https://github.com/cloudgrayau/pitch/tree/craft4/examples), please browse to the `/vendor/cloudgrayau/pitch/examples/` directory for installation.
 
 ## Merging & Loading Files
 
