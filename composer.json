@@ -2,7 +2,7 @@
     "name": "cloudgrayau/pitch",
     "description": "On the go SCSS compiling, CSS/JS minifying, merging and caching.",
     "type": "craft-plugin",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "keywords": [
         "craft",
         "cms",
@@ -11,7 +11,7 @@
         "pitch"
     ],
     "support": {
-        "docs": "https://github.com/cloudgrayau/pitch/blob/main/README.md",
+        "docs": "https://github.com/cloudgrayau/pitch/blob/craft3/README.md",
         "issues": "https://github.com/cloudgrayau/pitch/issues"
     },
     "license": "MIT",
@@ -23,7 +23,7 @@
     ],
     "require": {
         "craftcms/cms": "^3.0.0",
-        "scssphp/scssphp": "^1.8.1"
+        "scssphp/scssphp": "^1.10.2"
     },
     "autoload": {
         "psr-4": {
@@ -35,8 +35,8 @@
         "handle": "pitch",
         "developer": "Cloud Gray Pty Ltd",
         "developerUrl": "https://cloudgray.com.au/",
-        "documentationUrl": "https://github.com/cloudgrayau/pitch/blob/main/README.md",
-        "changelogUrl": "https://raw.githubusercontent.com/cloudgrayau/pitch/main/CHANGELOG.md",
+        "documentationUrl": "https://github.com/cloudgrayau/pitch/blob/craft3/README.md",
+        "changelogUrl": "https://raw.githubusercontent.com/cloudgrayau/pitch/craft3/CHANGELOG.md",
         "class": "cloudgrayau\\pitch\\Pitch"
     }
 }
