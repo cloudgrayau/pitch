@@ -37,7 +37,7 @@
         "developer": "Cloud Gray Pty Ltd",
         "developerUrl": "https://cloudgray.com.au/",
         "documentationUrl": "https://github.com/cloudgrayau/pitch/blob/craft4/README.md",
-        "changelogUrl": "https://raw.githubusercontent.com/cloudgrayau/pitch/main/CHANGELOG.md",
+        "changelogUrl": "https://raw.githubusercontent.com/cloudgrayau/pitch/craft4/CHANGELOG.md",
         "class": "cloudgrayau\\pitch\\Pitch"
     }
 }
