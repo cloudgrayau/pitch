@@ -2,6 +2,10 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
+## 2.1.0 - 2022-06-28
+- Implemented 'MatthiasMullie\Minify' for CSS/JS minification
+- Updated `scssphp/scssphp` to version 1.10.3
+
 ## 2.0.0 - 2022-03-25
 - Craft 4 release
 

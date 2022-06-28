@@ -2,7 +2,7 @@
 /**
  * Pitch plugin for Craft CMS 4.x
  *
- * Advanced SCSS, minimized JS and asset cache loading for CraftCMS
+ * On the go SCSS compiling, CSS/JS minifying, merging and caching.
  *
  * @link      https://cloudgray.com.au/
  * @copyright Copyright (c) 2020 Cloud Gray Pty Ltd
@@ -20,7 +20,7 @@ use yii\web\NotFoundHttpException;
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     2.0.0
+ * @since     2.1.0
  */
 class ScssController extends Controller {
 

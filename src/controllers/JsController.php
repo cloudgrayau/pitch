@@ -13,17 +13,18 @@ namespace cloudgrayau\pitch\controllers;
 use cloudgrayau\pitch\Pitch;
 use cloudgrayau\pitch\models\Paths;
 use cloudgrayau\pitch\models\Cached;
-use cloudgrayau\pitch\models\Minify;
 
 use Craft;
 use craft\web\Controller;
 use craft\helpers\FileHelper;
 use yii\web\NotFoundHttpException;
 
+use MatthiasMullie\Minify;
+
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     2.0.0
+ * @since     2.1.0
  */
 class JsController extends Controller {
 
@@ -116,7 +117,9 @@ class JsController extends Controller {
     $c = new Cached($cacheFolderPath, $settings->useCache, $settings->advancedCache);
     if (!$c->cache(Craft::$app->getRequest()-> fullPath, $offset, $filemtime)){
       if ($settings->minifyFiles){
-        echo Minify::minifyJS(str_replace('$baseUrl', Craft::$app->getRequest()->baseUrl, $js));
+        $minifier = new Minify\JS();
+        $minifier->add(str_replace('$baseUrl', Craft::$app->getRequest()->baseUrl, $js));
+        echo $minifier->minify();
       } else {
         echo str_replace('$baseUrl', Craft::$app->getRequest()->baseUrl, $js);
       }

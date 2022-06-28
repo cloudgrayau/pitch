@@ -13,7 +13,6 @@ namespace cloudgrayau\pitch\controllers;
 use cloudgrayau\pitch\Pitch;
 use cloudgrayau\pitch\models\Paths;
 use cloudgrayau\pitch\models\Cached;
-use cloudgrayau\pitch\models\Minify;
 
 use Craft;
 use craft\web\Controller;
@@ -21,11 +20,12 @@ use craft\helpers\FileHelper;
 use yii\web\NotFoundHttpException;
 
 use ScssPhp\ScssPhp\Compiler;
+use MatthiasMullie\Minify;
 
 /**
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     2.0.0
+ * @since     2.1.0
  */
 class CssController extends Controller {
 
@@ -145,7 +145,9 @@ class CssController extends Controller {
           break;
         default:
           if ($settings->minifyFiles){
-            echo Minify::minifyCSS($css);
+            $minifier = new Minify\CSS();
+            $minifier->add($css);
+            echo $minifier->minify();
           } else {
             echo $css;
           }

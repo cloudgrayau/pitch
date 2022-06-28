@@ -33,7 +33,7 @@ SCSS compiling uses the latest version of [scssphp](https://scssphp.github.io/sc
 - `Expanded`
 - `Compressed` *(default)*
 
-CSS and JS minifying uses a custom basic minifier (which can be disabled via the settings).
+CSS and JS minifying uses the 'MatthiasMullie\Minify' package (which can be disabled via the settings).
 
 Caching is enabled by default (recommended) and the cache directory and duration can be customised. 
 
