@@ -49,6 +49,14 @@ Caching is enabled by default (recommended) and the cache directory and duration
 
 For [example files](https://github.com/cloudgrayau/pitch/tree/craft4/examples), please browse to the `/vendor/cloudgrayau/pitch/examples/` directory for installation.
 
+You can also compile SCSS and/or minify CSS/JS directly in your templates.
+
+- **SCSS** - `<style>{{ craft.pitch.renderSCSS(entry.field)|raw }}</style>`
+- **CSS** - `<style>{{ craft.pitch.renderCSS(entry.field)|raw }}</style>`
+- **JS** - `<script type="text/javascript">{{ craft.pitch.renderJS(entry.field)|raw }}</script>`
+
+Further instructions for the inline method are found below.
+
 ## Merging & Loading Files
 
 ### SCSS ###
@@ -81,6 +89,8 @@ All files being merged will need to have the `.scss` extension.
 
 All files being merged will need to have the `.css` extension.
 
+In SCSS, `$baseUrl` refers to the relative `@web` directory (no trailing slash).
+
 --------
 
 ### JS ###
@@ -97,16 +107,27 @@ All files being merged will need to have the `.css` extension.
 
 All files being merged will need to have the `.js` extension.
 
+In JS, `$baseUrl` refers to the relative `@web` directory (no trailing slash).
+
 --------
 
 You can also force the browser to re-cache asset files by using `:DIGIT` in the asset URL prior to the extension, for example `'js/assets/site,plugin/chosen:01.js'`.
 
 Whilst in development mode, the browser cache of all assets will be forced to refresh on each page load.
 
-## Templating
+## Inline Compiling & Minifying
 
-- In SCSS, `$baseUrl` refers to the relative `@web` directory (no trailing slash).
-- In JS, `$baseUrl` refers to the relative `@web` directory (no trailing slash).
+You can inline compile SCSS and minify CSS/JS directly via your templates in Twig, as follows:
+
+- **SCSS** - `<style>{{ craft.pitch.renderSCSS(entry.field)|raw }}</style>`
+- **CSS** - `<style>{{ craft.pitch.renderCSS(entry.field)|raw }}</style>`
+- **JS** - `<script type="text/javascript">{{ craft.pitch.renderJS(entry.field)|raw }}</script>`
+
+Please note, the `@import` command in SCSS, will be relative to the `@web` directory.
+
+I would highly recommend that the inline method is inclosed in `{% cache %}{% endcache %}` tags for performance reasons.
+
+The Inline Compiling & Minifying integrates great with the new [Code Field](https://github.com/nystudio107/craft-code-field) from @nystudio107.
 
 ## Clearing Cache
 

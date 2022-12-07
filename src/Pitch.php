@@ -12,6 +12,7 @@ namespace cloudgrayau\pitch;
 
 use cloudgrayau\pitch\models\Settings;
 use cloudgrayau\pitch\controllers\CacheController;
+use cloudgrayau\pitch\variables\PitchVariable;
 
 use Craft;
 use craft\base\Plugin;
@@ -21,6 +22,7 @@ use craft\web\UrlManager;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\RegisterCacheOptionsEvent;
 use craft\console\Application as ConsoleApplication;
+use craft\web\twig\variables\CraftVariable;
 
 use craft\helpers\FileHelper;
 use craft\helpers\UrlHelper;
@@ -33,7 +35,7 @@ use yii\base\Event;
  *
  * @author    Cloud Gray Pty Ltd
  * @package   Pitch
- * @since     2.1.0
+ * @since     2.2.0
  *
  */
 class Pitch extends Plugin {
@@ -88,6 +90,10 @@ class Pitch extends Plugin {
         ];
       }
     );
+    
+    Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function (Event $event) {
+      $event->sender->set('pitch', PitchVariable::class);
+    });
 
     Event::on(
       UrlManager::class,

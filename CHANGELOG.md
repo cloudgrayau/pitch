@@ -2,6 +2,11 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
+## 2.2.0 - 2022-12-07
+- Added twig commands for inline compiling of SCSS and/or minification of CSS/JS.
+- Updated minimum requirement of `scssphp/scssphp` to version 1.11.0
+- Updated minimum requirement of `MatthiasMullie\Minify` to version 1.3.69
+
 ## 2.1.0 - 2022-06-28
 - Implemented 'MatthiasMullie\Minify' for CSS/JS minification
 - Updated `scssphp/scssphp` to version 1.10.3
