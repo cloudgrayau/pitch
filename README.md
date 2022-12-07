@@ -49,7 +49,7 @@ Caching is enabled by default (recommended) and the cache directory and duration
 
 For [example files](https://github.com/cloudgrayau/pitch/tree/craft4/examples), please browse to the `/vendor/cloudgrayau/pitch/examples/` directory for installation.
 
-You can also compile SCSS and/or minify CSS/JS inline in your templates.
+You can now compile inline SCSS and minify CSS/JS directly via your templates in Twig.
 
 - **SCSS** - `<style>{{ craft.pitch.renderSCSS(entry.field)|raw }}</style>`
 - **CSS** - `<style>{{ craft.pitch.renderCSS(entry.field)|raw }}</style>`
@@ -73,6 +73,8 @@ Further instructions for the inline method are found below.
 
 All files being merged will need to have the `.scss` extension.
 
+In SCSS, `$baseUrl` refers to the relative `@web` directory (no trailing slash).
+
 --------
 
 ### CSS ###
@@ -88,8 +90,6 @@ All files being merged will need to have the `.scss` extension.
 - `/CRAFT/web/assets/plugin/owl.css`
 
 All files being merged will need to have the `.css` extension.
-
-In SCSS, `$baseUrl` refers to the relative `@web` directory (no trailing slash).
 
 --------
 
@@ -117,7 +117,7 @@ Whilst in development mode, the browser cache of all assets will be forced to re
 
 ## Inline Compiling & Minifying
 
-You can inline compile SCSS and minify CSS/JS directly via your templates in Twig, as follows:
+You can now compile inline SCSS and minify CSS/JS directly via your templates in Twig, as follows:
 
 - **SCSS** - `<style>{{ craft.pitch.renderSCSS(entry.field)|raw }}</style>`
 - **CSS** - `<style>{{ craft.pitch.renderCSS(entry.field)|raw }}</style>`
