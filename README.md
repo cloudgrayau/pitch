@@ -49,7 +49,7 @@ Caching is enabled by default (recommended) and the cache directory and duration
 
 For [example files](https://github.com/cloudgrayau/pitch/tree/craft4/examples), please browse to the `/vendor/cloudgrayau/pitch/examples/` directory for installation.
 
-You can also compile SCSS and/or minify CSS/JS directly in your templates.
+You can also compile SCSS and/or minify CSS/JS inline in your templates.
 
 - **SCSS** - `<style>{{ craft.pitch.renderSCSS(entry.field)|raw }}</style>`
 - **CSS** - `<style>{{ craft.pitch.renderCSS(entry.field)|raw }}</style>`
