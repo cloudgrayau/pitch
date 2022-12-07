@@ -127,7 +127,7 @@ Please note, the `@import` command in SCSS, will be relative to the `@web` direc
 
 I would highly recommend that the inline method is inclosed in `{% cache %}{% endcache %}` tags for performance reasons.
 
-The Inline Compiling & Minifying integrates great with the new [Code Field](https://github.com/nystudio107/craft-code-field) from @nystudio107.
+The Inline Compiling & Minifying integrates great with the [Code Field](https://github.com/nystudio107/craft-code-field) from @nystudio107.
 
 ## Clearing Cache
 
