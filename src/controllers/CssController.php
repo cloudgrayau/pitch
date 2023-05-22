@@ -1,13 +1,4 @@
 <?php
-/**
- * Pitch plugin for Craft CMS 4.x
- *
- * On the go SCSS compiling, CSS/JS minifying, merging and caching.
- *
- * @link      https://cloudgray.com.au/
- * @copyright Copyright (c) 2020 Cloud Gray Pty Ltd
- */
-
 namespace cloudgrayau\pitch\controllers;
 
 use cloudgrayau\pitch\Pitch;
@@ -22,30 +13,14 @@ use yii\web\NotFoundHttpException;
 use ScssPhp\ScssPhp\Compiler;
 use MatthiasMullie\Minify;
 
-/**
- * @author    Cloud Gray Pty Ltd
- * @package   Pitch
- * @since     2.1.0
- */
 class CssController extends Controller {
 
-  // Protected Properties
-  // =========================================================================
-
-  /**
-   * @var    bool|array Allows anonymous access to this controller's actions.
-   *         The actions must be in 'kebab-case'
-   * @access protected
-   */
   protected array|bool|int $allowAnonymous = ['index' => self::ALLOW_ANONYMOUS_LIVE | self::ALLOW_ANONYMOUS_OFFLINE];
 
   // Public Methods
   // =========================================================================
 
-  /**
-   * @return mixed
-   */
-  public function actionIndex(){
+  public function actionIndex(): void {
     Paths::doInit();
     $output = Paths::$output;
     array_pop($output);
@@ -66,11 +41,11 @@ class CssController extends Controller {
     throw new NotFoundHttpException('Page not found.');
   }
 
-  public static function initSCSS($dir, $files){
+  public static function initSCSS($dir, $files): mixed {
     return self::initCSS($dir, $files, 'scss');
   }
 
-  private static function initCSS($dir, $files, $format='css'){
+  private static function initCSS($dir, $files, $format='css'): mixed {
     $webroot = Craft::getAlias('@webroot').'/';
     $settings = Pitch::getInstance()->settings;
     $ext = strrchr($files,'.');
@@ -86,7 +61,7 @@ class CssController extends Controller {
       $file = $dir.$file.'.'.$format;
       if (file_exists($webroot.$file)){
         ++$count;
-        $mtime = filemtime($webroot.$file);
+        $mtime = FileHelper::lastModifiedTime($webroot.$file);
         if ($mtime > $filemtime){
           $filemtime = $mtime;
         }
@@ -158,4 +133,5 @@ class CssController extends Controller {
     header('Etag: '.sprintf('"%s-%s"',$filemtime,md5(ob_get_contents())));
     return $c->dump();
   }
+  
 }

@@ -1,13 +1,4 @@
 <?php
-/**
- * Pitch plugin for Craft CMS 4.x
- *
- * On the go SCSS compiling, CSS/JS minifying, merging and caching.
- *
- * @link      https://cloudgray.com.au/
- * @copyright Copyright (c) 2020 Cloud Gray Pty Ltd
- */
-
 namespace cloudgrayau\pitch\models;
 
 use cloudgrayau\pitch\Pitch;
@@ -15,23 +6,18 @@ use cloudgrayau\pitch\Pitch;
 use Craft;
 use craft\base\Model;
 
-/**
- * @author    Cloud Gray Pty Ltd
- * @package   Pitch
- * @since     2.0.0
- */
-class Settings extends Model
-{
-  // Public Properties
+class Settings extends Model {
+  
+  // Static Variables
   // =========================================================================
 
-  /**
-   * @var string
-   */
-  public $formatOptions = [
+  public array $formatOptions = [
     ['label' => 'Expanded', 'value' => 'Expanded'],
     ['label' => 'Compressed', 'value' => 'Compressed'],
   ];
+  
+  // Editable Variables
+  // =========================================================================
 
   public string $cssFormat = 'Compressed';
   public bool $minifyFiles = true;
@@ -40,21 +26,14 @@ class Settings extends Model
   public string $cacheDir = '';
   public int $cacheDuration = 2592000;
   
-
   // Public Methods
   // =========================================================================
 
-  /**
-   * @inheritdoc
-   */
-  public function rules(): array
-  {
+  public function rules(): array {
     return [
       [['cacheDir','cssFormat'], 'string'],
       [['minifyFiles', 'useCache', 'advancedCache'], 'boolean'],
-      ['cacheDuration', 'integer', 'min' => 0],
-      ['cssFormat', 'required'],
-      ['cssFormat', 'default', 'value' => 'Compressed'],
+      ['cacheDuration', 'integer', 'min' => 0]
     ];
   }
 }

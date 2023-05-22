@@ -1,13 +1,4 @@
 <?php
-/**
- * Pitch plugin for Craft CMS 4.x
- *
- * On the go SCSS compiling, CSS/JS minifying, merging and caching.
- *
- * @link      https://cloudgray.com.au/
- * @copyright Copyright (c) 2020 Cloud Gray Pty Ltd
- */
-
 namespace cloudgrayau\pitch\variables;
 
 use cloudgrayau\pitch\Pitch;
@@ -16,17 +7,12 @@ use Craft;
 use ScssPhp\ScssPhp\Compiler;
 use MatthiasMullie\Minify;
 
-/**
- * Class PitchVariable
- *
- * @author    Cloud Gray Pty Ltd
- * @package   Pitch
- * @since     2.2.0
- *
- */
 class PitchVariable {
+    
+    // Public Methods
+    // =========================================================================
   
-    public function renderSCSS(String $output='') {
+    public function renderSCSS(String $output=''): string {
       $scss = new Compiler();
       $scss->setImportPaths(Craft::getAlias('@webroot').'/');
       $settings = Pitch::getInstance()->settings;
@@ -45,12 +31,12 @@ class PitchVariable {
       $scss->setOutputStyle($format);
       return $scss->compileString($output)->getCss();
     }
-    public function renderCSS(String $output='') {
+    public function renderCSS(String $output=''): string {
       $minifier = new Minify\CSS();
       $minifier->add($output);
       return $minifier->minify();
     }
-    public function renderJS(String $output='') {
+    public function renderJS(String $output=''): string {
       $minifier = new Minify\JS();
       $minifier->add($output);
       return $minifier->minify();

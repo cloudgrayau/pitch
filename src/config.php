@@ -1,14 +1,5 @@
 <?php
 /**
- * Pitch plugin for Craft CMS 4.x
- *
- * On the go SCSS compiling, CSS/JS minifying, merging and caching.
- *
- * @link      https://cloudgray.com.au/
- * @copyright Copyright (c) 2020 Cloud Gray Pty Ltd
- */
-
-/**
  * Pitch config.php
  *
  * This file exists only as a template for the Pitch settings.

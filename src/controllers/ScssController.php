@@ -1,13 +1,4 @@
 <?php
-/**
- * Pitch plugin for Craft CMS 4.x
- *
- * On the go SCSS compiling, CSS/JS minifying, merging and caching.
- *
- * @link      https://cloudgray.com.au/
- * @copyright Copyright (c) 2020 Cloud Gray Pty Ltd
- */
-
 namespace cloudgrayau\pitch\controllers;
 
 use cloudgrayau\pitch\Pitch;
@@ -17,30 +8,14 @@ use Craft;
 use craft\web\Controller;
 use yii\web\NotFoundHttpException;
 
-/**
- * @author    Cloud Gray Pty Ltd
- * @package   Pitch
- * @since     2.1.0
- */
 class ScssController extends Controller {
 
-  // Protected Properties
-  // =========================================================================
-
-  /**
-   * @var    bool|array Allows anonymous access to this controller's actions.
-   *         The actions must be in 'kebab-case'
-   * @access protected
-   */
   protected array|bool|int $allowAnonymous = ['index' => self::ALLOW_ANONYMOUS_LIVE | self::ALLOW_ANONYMOUS_OFFLINE];
 
   // Public Methods
   // =========================================================================
 
-  /**
-   * @return mixed
-   */
-  public function actionIndex(){
+  public function actionIndex(): void {
     Paths::doInit();
     $output = Paths::$output;
     array_pop($output);

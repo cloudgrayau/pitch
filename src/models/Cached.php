@@ -1,25 +1,12 @@
 <?php
-/**
- * Pitch plugin for Craft CMS 4.x
- *
- * On the go SCSS compiling, CSS/JS minifying, merging and caching.
- *
- * @link      https://cloudgray.com.au/
- * @copyright Copyright (c) 2020 Cloud Gray Pty Ltd
- */
-
 namespace cloudgrayau\pitch\models;
 
 use cloudgrayau\pitch\Pitch;
 
 use Craft;
 use craft\base\Model;
+use craft\helpers\FileHelper;
 
-/**
- * @author    Cloud Gray Pty Ltd
- * @package   Pitch
- * @since     2.0.0
- */
 class Cached extends Model {
 
   private static string $dir = '';
@@ -27,18 +14,22 @@ class Cached extends Model {
   private string $tmp_file = '';
   private bool $cache = false;
   private bool $advanced = false;
+  
+  // Public Methods
+  // =========================================================================
 
-  function __construct($dir, $cache=false, $advanced=false){
+  function __construct($dir, $cache=false, $advanced=false) {
     self::$dir = $dir;
     $this->cache = $cache;
     $this->advanced = $advanced;
   }
 
-  final public function generateURL(){
+  final public function generateURL(): string {
     $parts = pathinfo($this->filename);
     if ($this->advanced){
-      if (!file_exists(self::$dir.$parts['dirname'].'/')){
-        mkdir(self::$dir.$parts['dirname'].'/', 0777, true);
+      $dirname = self::$dir.$parts['dirname'].'/';
+      if (!is_dir($dirname)){
+        FileHelper::createDirectory($dirname);
       }
       return $parts['dirname'].'/'.$parts['basename'];
     } else {
@@ -46,14 +37,14 @@ class Cached extends Model {
     }
   }
 
-  final public function cache($file='', $time=0, $mtime=0){
+  final public function cache($file='', $time=0, $mtime=0): bool {
     if ($this->cache){
       $this->filename = $file;
       ob_start();
       if ($this->tmp_file = $this->generateURL()) {
         if (file_exists(self::$dir.$this->tmp_file)) {
           $expiry = ($time > 0) ? $time : 3600;
-          $mod_time = filemtime(self::$dir.$this->tmp_file);
+          $mod_time = FileHelper::lastModifiedTime(self::$dir.$this->tmp_file);
           if (($mtime <= $mod_time) && (($mod_time+$expiry) > $_SERVER['REQUEST_TIME'])){
             readfile(self::$dir.$this->tmp_file);
             return true;
@@ -64,24 +55,24 @@ class Cached extends Model {
     return false;
   }
 
-  final public function write(){
+  final public function write(): void {
     if ($this->cache){
       $data = ob_get_contents();
       if (!empty($this->tmp_file)) {
-        try {
-          if ($fp = fopen(self::$dir.$this->tmp_file, 'wb')) {
-            flock($fp, LOCK_EX);
-            fwrite($fp, $data);
-            flock($fp, LOCK_UN);
-            fclose($fp);
-          }
-        } catch (Exception $e) {
-        }
+        FileHelper::writeToFile(
+          self::$dir.$this->tmp_file,
+          $data,
+          array(
+            'createDirs' => true,
+            'append' => false,
+            'lock' => true
+          )
+        );
       }
     }
   }
 
-  final public function dump(){
+  final public function dump(): bool {
     if ($this->cache){
       ob_end_flush();
     }

@@ -1,18 +1,10 @@
 <?php
-/**
- * Pitch plugin for Craft CMS 4.x
- *
- * On the go SCSS compiling, CSS/JS minifying, merging and caching.
- *
- * @link      https://cloudgray.com.au/
- * @copyright Copyright (c) 2020 Cloud Gray Pty Ltd
- */
-
 namespace cloudgrayau\pitch;
 
 use cloudgrayau\pitch\models\Settings;
 use cloudgrayau\pitch\controllers\CacheController;
 use cloudgrayau\pitch\variables\PitchVariable;
+use cloudgrayau\utils\UtilityHelper;
 
 use Craft;
 use craft\base\Plugin;
@@ -30,55 +22,59 @@ use craft\utilities\ClearCaches;
 
 use yii\base\Event;
 
-/**
- * Class Pitch
- *
- * @author    Cloud Gray Pty Ltd
- * @package   Pitch
- * @since     2.2.0
- *
- */
 class Pitch extends Plugin {
-  // Static Properties
-  // =========================================================================
 
-  /**
-   * @var Pitch
-   */
   public static $plugin;
-
-  // Public Properties
-  // =========================================================================
-
-  /**
-   * @var string
-   */
   public string $schemaVersion = '1.0.0';
-
-  /**
-   * @var bool
-   */
   public bool $hasCpSettings = true;
-
-  /**
-   * @var bool
-   */
   public bool $hasCpSection = false;
 
   // Public Methods
   // =========================================================================
 
-  /**
-   * @inheritdoc
-   */
-  public function init(){
+  public function init(): void {
     parent::init();
     self::$plugin = $this;
-    
+    $this->_registerComponents();  
+    $this->_registerConsole();
+    $this->_registerCache();
+    $this->_registerVariables();
+    $this->_registerUrlRules();
+    $this->_registerCpUrlRules();
+  }
+
+  public function afterSaveSettings(): void {
+    parent::afterSaveSettings();
+    $this->clearCache();
+  }
+
+  public function clearCache($util=false): void {
+    $cacheDir = (!empty($this->settings->cacheDir)) ? $this->settings->cacheDir : '@storage/pitch';
+    $cacheFolderPath = FileHelper::normalizePath(
+      Craft::parseEnv($cacheDir)
+    ).'/';
+    FileHelper::clearDirectory($cacheFolderPath);
+    if (!$util){
+      Craft::$app->response
+      ->redirect(UrlHelper::url('settings/plugins/pitch'))
+      ->send();
+    }
+  }
+  
+  // Private Methods
+  // =========================================================================
+  
+  private function _registerComponents(): void {
+    UtilityHelper::registerModule();
+  }
+  
+  private function _registerConsole(): void {
     if (Craft::$app instanceof ConsoleApplication) {
       $this->controllerNamespace = 'cloudgrayau\pitch\console';
     }
-    
+  }
+  
+  private function _registerCache(): void {
     Event::on(ClearCaches::class, ClearCaches::EVENT_REGISTER_CACHE_OPTIONS,
       function(RegisterCacheOptionsEvent $event) {
         $event->options[] = [
@@ -90,11 +86,15 @@ class Pitch extends Plugin {
         ];
       }
     );
-    
+  }
+  
+  private function _registerVariables(): void {
     Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function (Event $event) {
       $event->sender->set('pitch', PitchVariable::class);
     });
-
+  }
+  
+  private function _registerUrlRules(): void {
     Event::on(
       UrlManager::class,
       UrlManager::EVENT_REGISTER_SITE_URL_RULES,
@@ -105,7 +105,9 @@ class Pitch extends Plugin {
         $event->rules['js/<action:.+>.js'] = 'pitch/js';
       }
     );
-
+  }
+  
+  private function _registerCpUrlRules(): void {
     Event::on(
       UrlManager::class,
       UrlManager::EVENT_REGISTER_CP_URL_RULES,
@@ -113,60 +115,15 @@ class Pitch extends Plugin {
         $event->rules['pitch/clear'] = 'pitch/cache/clear-cache';
       }
     );
-    
-  }
-
-  public function afterSaveSettings(): void{
-    parent::afterSaveSettings();
-    $this->clearCache();
-  }
-
-  public function clearCache($util=false){
-    $cacheDir = (!empty($this->settings->cacheDir)) ? $this->settings->cacheDir : '@storage/pitch';
-    $cacheFolderPath = FileHelper::normalizePath(
-      Craft::parseEnv($cacheDir)
-    ).'/';
-    $files = glob($cacheFolderPath.'*');
-    foreach($files as $file){
-      if(is_dir($file)){
-        $this->deleteSub($file);
-      } else {
-        unlink($file);
-      }
-    }
-    if (!$util){
-      Craft::$app->response
-      ->redirect(UrlHelper::url('settings/plugins/pitch'))
-      ->send();
-    }
-  }
-  
-  // Private Methods
-  // =========================================================================
-  private function deleteSub($dir){
-    foreach(glob($dir . '/*') as $file) {
-      if(is_dir($file)){
-        $this->deleteSub($file);
-      } else {
-        unlink($file);
-      }
-    }
-    rmdir($dir);
   }
 
   // Protected Methods
   // =========================================================================
 
-  /**
-   * @inheritdoc
-   */
-  protected function createSettingsModel(): ?\craft\base\Model{
+  protected function createSettingsModel(): ?\craft\base\Model {
     return new Settings();
   }
 
-  /**
-   * @inheritdoc
-   */
   protected function settingsHtml(): ?string {
     return Craft::$app->view->renderTemplate(
       'pitch/settings',

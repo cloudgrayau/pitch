@@ -1,30 +1,36 @@
+{% do view.registerAssetBundle("cloudgrayau\\utils\\assetbundles\\CloudGrayAsset") %}
 {% import "_includes/forms" as forms %}
+{% import 'cloudgrayau-utils/_macros' as macros %}
 <div id="settings">
 {{ forms.selectField({
     label: "SCSS Output Style",
     instructions: "The output style for your compiled SCSS files.",
     name: 'cssFormat',
-    options: [{label: 'Expanded', value: 'Expanded'},{label: 'Compressed', value: 'Compressed'}],
+    options: settings.formatOptions,
     value: settings['cssFormat'],
     required: true,
+    warning: macros.configWarning('cssFormat', 'pitch')
 }) }}
 {{ forms.lightswitchField({
     label: "Enable Minification",
     instructions: "Whether CSS/JS minification should be enabled.",
     name: 'minifyFiles',
     on: settings.minifyFiles,
+    warning: macros.configWarning('minifyFiles', 'pitch')
 }) }}
 {{ forms.lightswitchField({
     label: "Enable Cache",
     instructions: "Whether caching should be enabled.",
     name: 'useCache',
     on: settings.useCache,
+    warning: macros.configWarning('useCache', 'pitch')
 }) }}
 {{ forms.lightswitchField({
     label: "Enable Advanced Caching",
     instructions: "Whether advanced caching should be enabled. Offers superior performance but requires <a href=\"https://github.com/cloudgrayau/pitch/blob/main/ADVANCED.md\" target=\"_blank\">server rewrites</a> and changes to the <a href=\"https://github.com/cloudgrayau/pitch/blob/main/ADVANCED.md\" target=\"_blank\">default storage path</a>.<br /><em>Recommended for use in production environments. This setting is ignored if 'Enable Cache' is disabled.</em>",
     name: 'advancedCache',
     on: settings.advancedCache,
+    warning: macros.configWarning('advancedCache', 'pitch')
 }) }}
 {{ forms.autosuggestField({
     label: "Cache Storage Path",
@@ -35,6 +41,7 @@
     value: settings['cacheDir'],
     placeholder: '@storage/pitch',
     required: false,
+    warning: macros.configWarning('cacheDir', 'pitch')
 }) }}
 {{ forms.textField({
     label: "Cache duration",
@@ -44,11 +51,13 @@
     placeholder: 2592000,
     type: 'number',
     min: 0,
+    warning: macros.configWarning('cacheDuration', 'pitch')
 }) }}
   <div data-js="clear-button">
     <a data-js="clear-cache" class="btn submit">Clear Cache</a>
   </div>
 </div>
+{% include 'cloudgrayau-utils/footer' %}
 {% js %}
 $(document).ready(function() { 
   $(document).on('click', '[data-js="clear-cache"]', function() {
