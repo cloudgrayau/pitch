@@ -2,7 +2,7 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
-## 2.3- 2023-05-22
+## 2.3 - 2023-05-22
 - Numerous code optimisations
 - Updated minimum requirement of `MatthiasMullie\Minify` to version 1.3.70
 
