@@ -27,10 +27,6 @@ class Cached extends Model {
   final public function generateURL(): string {
     $parts = pathinfo($this->filename);
     if ($this->advanced){
-      $dirname = self::$dir.$parts['dirname'].'/';
-      if (!is_dir($dirname)){
-        FileHelper::createDirectory($dirname);
-      }
       return $parts['dirname'].'/'.$parts['basename'];
     } else {
       return md5($this->filename).'.'.$parts['extension'];
@@ -41,12 +37,13 @@ class Cached extends Model {
     if ($this->cache){
       $this->filename = $file;
       ob_start();
-      if ($this->tmp_file = $this->generateURL()) {
-        if (file_exists(self::$dir.$this->tmp_file)) {
-          $expiry = ($time > 0) ? $time : 3600;
-          $mod_time = FileHelper::lastModifiedTime(self::$dir.$this->tmp_file);
+      if ($this->tmp_file = $this->generateURL()){
+        $cachefile = FileHelper::normalizePath(self::$dir.$this->tmp_file);
+        if (file_exists($cachefile)) {
+          $expiry = ($time > 0) ? $time : 2592000;
+          $mod_time = FileHelper::lastModifiedTime($cachefile);
           if (($mtime <= $mod_time) && (($mod_time+$expiry) > $_SERVER['REQUEST_TIME'])){
-            readfile(self::$dir.$this->tmp_file);
+            readfile($cachefile);
             return true;
           }
         }

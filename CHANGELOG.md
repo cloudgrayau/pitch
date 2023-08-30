@@ -2,6 +2,12 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
+## 2.3.2 - 2023-08-31
+- Code optimisations
+- Increased storage path normalisation
+- Fix error with clearing cache if the storage directory doesn't exist
+- Updated minimum requirement of `MatthiasMullie\Minify` to version 1.3.71
+
 ## 2.3.1 - 2023-05-22
 - Numerous code optimisations
 - Updated minimum requirement of `MatthiasMullie\Minify` to version 1.3.70
@@ -10,7 +16,7 @@ Release notes for the Pitch Craft CMS plugin.
 - Fixed minimum requirement of `scssphp/scssphp`
 
 ## 2.2.0 - 2022-12-07
-- Added twig commands for inline compiling of SCSS and/or minification of CSS/JS.
+- Added twig commands for inline compiling of SCSS and/or minification of CSS/JS
 - Updated minimum requirement of `scssphp/scssphp` to version 1.11.0
 - Updated minimum requirement of `MatthiasMullie\Minify` to version 1.3.69
 

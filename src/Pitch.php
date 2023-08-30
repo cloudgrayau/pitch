@@ -16,6 +16,7 @@ use craft\events\RegisterCacheOptionsEvent;
 use craft\console\Application as ConsoleApplication;
 use craft\web\twig\variables\CraftVariable;
 
+use craft\helpers\App;
 use craft\helpers\FileHelper;
 use craft\helpers\UrlHelper;
 use craft\utilities\ClearCaches;
@@ -51,9 +52,11 @@ class Pitch extends Plugin {
   public function clearCache($util=false): void {
     $cacheDir = (!empty($this->settings->cacheDir)) ? $this->settings->cacheDir : '@storage/pitch';
     $cacheFolderPath = FileHelper::normalizePath(
-      Craft::parseEnv($cacheDir)
-    ).'/';
-    FileHelper::clearDirectory($cacheFolderPath);
+      App::parseEnv($cacheDir)
+    ).'/';    
+    if (is_dir($cacheFolderPath)){
+      FileHelper::clearDirectory($cacheFolderPath);
+    }
     if (!$util){
       Craft::$app->response
       ->redirect(UrlHelper::url('settings/plugins/pitch'))

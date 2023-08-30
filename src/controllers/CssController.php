@@ -7,6 +7,7 @@ use cloudgrayau\pitch\models\Cached;
 
 use Craft;
 use craft\web\Controller;
+use craft\helpers\App;
 use craft\helpers\FileHelper;
 use yii\web\NotFoundHttpException;
 
@@ -52,26 +53,24 @@ class CssController extends Controller {
     $files = explode(',', substr($files, 0, -strlen($ext)));
     ob_start();
     $filemtime = 0;
-    $count = 0;
     foreach($files as $file){
       $pos = strpos($file,':');
       if (($pos !== false) && (ctype_digit(substr($file, $pos+1)))){
         $file = substr($file, 0, $pos);
       }
-      $file = $dir.$file.'.'.$format;
-      if (file_exists($webroot.$file)){
-        ++$count;
-        $mtime = FileHelper::lastModifiedTime($webroot.$file);
+      $asset = FileHelper::normalizePath($webroot.$dir.$file.'.'.$format);
+      if (file_exists($asset)){
+        $mtime = FileHelper::lastModifiedTime($asset);
         if ($mtime > $filemtime){
           $filemtime = $mtime;
         }
-        readfile($webroot.$file);
+        readfile($asset);
         echo "\n";
       }
     }
     $css = ob_get_contents();
     ob_end_clean();
-    if ($count == 0){
+    if ($filemtime == 0){
       return false;
     }
     $offset = ($settings->cacheDuration > 0) ? $settings->cacheDuration : 2592000;
@@ -84,22 +83,19 @@ class CssController extends Controller {
       header('Cache-control: max-age='.$offset.', public, must-revalidate');
     }
     header('Last-Modified: '.gmdate('D, d M Y H:i:s', $filemtime).' GMT');
-    header('Expires: ' .gmdate('D, d M Y H:i:s',$filemtime + $offset) . ' GMT');
+    header('Expires: ' .gmdate('D, d M Y H:i:s',$_SERVER['REQUEST_TIME'] + $offset) . ' GMT');
     header('Link: <'.$_SERVER['REQUEST_URI'].'>; rel=preload; as=style;');
     header('Connection: keep-alive');
     $cacheDir = (!empty($settings->cacheDir)) ? $settings->cacheDir : '@storage/pitch';
     $cacheFolderPath = FileHelper::normalizePath(
-      Craft::parseEnv($cacheDir)
+      App::parseEnv($cacheDir)
     ).'/';
-    if (!is_dir($cacheFolderPath)){
-      FileHelper::createDirectory($cacheFolderPath);
-    }
     $c = new Cached($cacheFolderPath, $settings->useCache, $settings->advancedCache);
-    if (!$c->cache(Craft::$app->getRequest()-> fullPath, $offset, $filemtime)){
+    if (!$c->cache(Craft::$app->getRequest()->fullPath, $offset, $filemtime)){
       switch($format){
         case 'scss':
           $scss = new Compiler();
-          $scss->setImportPaths($webroot.$dir);
+          $scss->setImportPaths(FileHelper::normalizePath($webroot.$dir).'/');
           $scss->setVariables(array(
             'baseUrl' => Craft::$app->getRequest()->baseUrl,
           ));
@@ -121,10 +117,10 @@ class CssController extends Controller {
         default:
           if ($settings->minifyFiles){
             $minifier = new Minify\CSS();
-            $minifier->add($css);
+            $minifier->add(str_replace('#{$baseUrl}', Craft::$app->getRequest()->baseUrl, $css));
             echo $minifier->minify();
           } else {
-            echo $css;
+            echo str_replace('#{$baseUrl}', Craft::$app->getRequest()->baseUrl, $css);
           }
           break;
       }
