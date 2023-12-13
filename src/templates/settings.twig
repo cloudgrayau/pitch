@@ -9,6 +9,7 @@
     options: settings.formatOptions,
     value: settings['cssFormat'],
     required: true,
+    errors: settings.getErrors('cssFormat'),
     warning: macros.configWarning('cssFormat', 'pitch')
 }) }}
 {{ forms.lightswitchField({
@@ -16,6 +17,7 @@
     instructions: "Whether CSS/JS minification should be enabled.",
     name: 'minifyFiles',
     on: settings.minifyFiles,
+    errors: settings.getErrors('minifyFiles'),
     warning: macros.configWarning('minifyFiles', 'pitch')
 }) }}
 {{ forms.lightswitchField({
@@ -23,6 +25,7 @@
     instructions: "Whether caching should be enabled.",
     name: 'useCache',
     on: settings.useCache,
+    errors: settings.getErrors('useCache'),
     warning: macros.configWarning('useCache', 'pitch')
 }) }}
 {{ forms.lightswitchField({
@@ -30,6 +33,7 @@
     instructions: "Whether advanced caching should be enabled. Offers superior performance but requires <a href=\"https://github.com/cloudgrayau/pitch/blob/main/ADVANCED.md\" target=\"_blank\">server rewrites</a> and changes to the <a href=\"https://github.com/cloudgrayau/pitch/blob/main/ADVANCED.md\" target=\"_blank\">default storage path</a>.<br /><em>Recommended for use in production environments. This setting is ignored if 'Enable Cache' is disabled.</em>",
     name: 'advancedCache',
     on: settings.advancedCache,
+    errors: settings.getErrors('advancedCache'),
     warning: macros.configWarning('advancedCache', 'pitch')
 }) }}
 {{ forms.autosuggestField({
@@ -41,6 +45,7 @@
     value: settings['cacheDir'],
     placeholder: '@storage/pitch',
     required: false,
+    errors: settings.getErrors('cacheDir'),
     warning: macros.configWarning('cacheDir', 'pitch')
 }) }}
 {{ forms.textField({
@@ -51,6 +56,7 @@
     placeholder: 2592000,
     type: 'number',
     min: 0,
+    errors: settings.getErrors('cacheDuration'),
     warning: macros.configWarning('cacheDuration', 'pitch')
 }) }}
   <div data-js="clear-button">

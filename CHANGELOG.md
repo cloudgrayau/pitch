@@ -2,6 +2,10 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
+## 2.3.3 - 2023-12-14
+- Implemented storage path validation
+- Updated `scssphp/scssphp` to version 1.12.0
+
 ## 2.3.2 - 2023-08-31
 - Code optimisations
 - Increased storage path normalisation

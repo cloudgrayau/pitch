@@ -29,6 +29,7 @@ class Pitch extends Plugin {
   public string $schemaVersion = '1.0.0';
   public bool $hasCpSettings = true;
   public bool $hasCpSection = false;
+  private string $cacheDir = '';
 
   // Public Methods
   // =========================================================================
@@ -36,17 +37,14 @@ class Pitch extends Plugin {
   public function init(): void {
     parent::init();
     self::$plugin = $this;
+    $this->cacheDir = $this->getSettings()->cacheDir;
+    $this->_registerEvents();
     $this->_registerComponents();  
     $this->_registerConsole();
     $this->_registerCache();
     $this->_registerVariables();
     $this->_registerUrlRules();
     $this->_registerCpUrlRules();
-  }
-
-  public function afterSaveSettings(): void {
-    parent::afterSaveSettings();
-    $this->clearCache();
   }
 
   public function clearCache($util=false): void {
@@ -66,6 +64,24 @@ class Pitch extends Plugin {
   
   // Private Methods
   // =========================================================================
+  
+  private function _registerEvents(): void {
+    Event::on(Pitch::class, Pitch::EVENT_AFTER_SAVE_SETTINGS, function(Event $event){
+      $entry = $event->sender;
+      if ($entry::class == 'cloudgrayau\pitch\Pitch'){
+        $cacheDir = (!empty($this->settings->cacheDir)) ? $this->settings->cacheDir : '@storage/pitch';
+        if (($cacheDir !== $this->cacheDir) && (!empty($this->cacheDir))){
+          $cacheFolderPath = FileHelper::normalizePath(
+            App::parseEnv($this->cacheDir)
+          ).'/';
+          if (is_dir($cacheFolderPath)){
+            FileHelper::removeDirectory($cacheFolderPath);
+          }
+        }
+        $this->clearCache();
+      }
+    });
+  }
   
   private function _registerComponents(): void {
     UtilityHelper::registerModule();
