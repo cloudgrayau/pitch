@@ -1,4 +1,4 @@
-# Pitch for Craft CMS 4
+# Pitch for Craft CMS 4/5
 
 On the go SCSS compiling, CSS/JS minifying, merging and caching.
 
