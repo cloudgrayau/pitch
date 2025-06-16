@@ -17,6 +17,18 @@ Please note, this mode completely ignores the `cacheDuration` setting and requir
 3. Update your server rewrites for either Apache or Nginx.
 4. Enjoy the updated performance.
 
+To only use the Advanced caching mode in production, you can use the example configuration file below.
+
+ 	<?php
+ 	use craft\helpers\App;
+ 	
+ 	$isDev = App::env('CRAFT_ENVIRONMENT') === 'dev';
+ 	return [
+ 		'advancedCache' => !$isDev,
+ 		'cacheDir' => ($isDev) ? '@storage/pitch' : '@webroot/pitch'
+ 	];
+ 	?>
+
 ## Apache
 
 The following `.htaccess` rewrite rules are required for advanced caching to load the generated files:
@@ -76,19 +88,5 @@ The following conf rules are required for advanced caching to load the generated
 	}
 
 *Can anyone help with the translation of the above `.htaccess` rules for Nginx?*
-
-## Config
-
-To only use the Advanced caching mode on the production URL, you can use the example configuration file below.
-
-	<?php
-	use craft\helpers\App;
-  
-	$isDev = App::env('CRAFT_ENVIRONMENT') === 'dev';
-	return [
-		'advancedCache' => !$isDev,
-		'cacheDir' => ($isDev) ? '@storage/pitch' : '@webroot/pitch'
-	];
-	?>
 
 Brought to you by [Cloud Gray Pty Ltd](https://cloudgray.com.au/)
