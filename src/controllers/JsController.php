@@ -21,8 +21,21 @@ class JsController extends Controller {
   // =========================================================================
 
   public function actionIndex(): void {
-    $paths = Paths::getPaths();
-    if ($result = self::initJS($paths['dir'], $paths['files'])){
+    Paths::doInit();
+    $output = Paths::$output;
+    array_pop($output);
+    $string = implode('/', $output);
+    if (($val = stripos($string, ',')) && ($val !== false)){
+      $url = implode('/', Paths::$output);
+      $dir = explode('/', substr($url, 0, $val));
+      $original = array_pop($dir);
+      $dir = implode('/', $dir).'/';
+      $files = $original.','.substr($url, $val+1);
+    } else {
+      $files = array_pop(Paths::$output);
+      $dir = implode('/', Paths::$output).'/';
+    }
+    if ($result = self::initJS($dir, $files)){
       exit();
     }
     throw new NotFoundHttpException('Page not found.');

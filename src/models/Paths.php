@@ -19,27 +19,4 @@ class Paths extends Model {
     self::$output = $output;
   }
   
-  public static function getPaths(): array {
-    if (empty(self::$output)){
-      self::doInit();
-    }
-    $output = self::$output;
-    array_pop($output);
-    $string = implode('/', $output);
-    if (($val = stripos($string, ',')) && ($val !== false)){
-      $url = implode('/', self::$output);
-      $dir = explode('/', substr($url, 0, $val));
-      $original = array_pop($dir);
-      $dir = implode('/', $dir).'/';
-      $files = $original.','.substr($url, $val+1);
-    } else {
-      $files = array_pop(self::$output);
-      $dir = implode('/', self::$output).'/';
-    }
-    return [
-      'dir' => $dir,
-      'files' => $files
-    ];
-  }
-  
 }
