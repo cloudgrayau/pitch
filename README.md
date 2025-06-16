@@ -18,25 +18,25 @@ Pitch is a plugin that allows for on the go SCSS compiling, CSS/JS minifying, me
 
 ## Configuring Pitch
 
-SCSS compiling uses the latest (2.x branch) version of [scssphp](https://scssphp.github.io/scssphp/) and two output styles are included:
+SCSS compiling uses the latest version of [scssphp](https://scssphp.github.io/scssphp/) and two output styles are included:
 
 - `Expanded`
 - `Compressed` *(default)*
 
 CSS and JS minifying uses the 'MatthiasMullie\Minify' package (which can be disabled via the settings).
 
-Caching is enabled by default (recommended) and the cache directory and duration can be customised. 
-
-### Advanced Caching Mode
-
-**Advanced Caching Mode** can also be enabled, which offers superior performance but requires server rewrites and changes to the default storage path. For instructions on how to setup Advanced Caching Mode, please refer to the [ADVANCED.md](https://github.com/cloudgrayau/pitch/blob/craft5/ADVANCED.md).
+Caching is enabled by default (recommended) and the cache directory and duration can be customised.
 
 ## 3.0.0 Upgrade Notes
 
 Pitch files should now be loaded using the new preferred and cache-busting `pitch()` twig command.
 To upgrade, please replace `url('scss/asset.scss')` with `pitch('asset.scss)` as per the instructions below. The old method of loading pitch files will still function.
 
-Pitch now uses the new 2.x branch of the `scssphp` compiler (Craft 5 ONLY). This release is a full rewrite of the compiler.
+For Craft 5, Pitch now uses the new 2.x branch of the `scssphp` compiler. This release is a full rewrite of the compiler.
+
+## Advanced Caching Mode
+
+**Advanced Caching Mode** can also be enabled, which offers superior performance but requires server rewrites and changes to the default storage path. For instructions on how to setup Advanced Caching Mode, please refer to the [ADVANCED.md](https://github.com/cloudgrayau/pitch/blob/craft5/ADVANCED.md).
 
 ## Using Pitch
 
