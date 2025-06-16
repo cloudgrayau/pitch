@@ -17,7 +17,7 @@ Please note, this mode completely ignores the `cacheDuration` setting and requir
 3. Update your server rewrites for either Apache or Nginx.
 4. Enjoy the updated performance.
 
-To only use the Advanced caching mode in production, you can use the example configuration file below.
+To only use **Advanced Caching Mode** in production, you can use the example configuration file below.
 
  	<?php
  	use craft\helpers\App;
