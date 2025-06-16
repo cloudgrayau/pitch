@@ -1,4 +1,4 @@
-# Pitch for Craft CMS 4/5
+# Pitch for Craft CMS 5
 
 On the go SCSS compiling, CSS/JS minifying, merging and caching.
 
@@ -6,7 +6,7 @@ On the go SCSS compiling, CSS/JS minifying, merging and caching.
 
 ## Requirements
 
-This plugin requires Craft CMS 4.0.0 or later.
+This plugin requires Craft CMS 5.0.0 or later.
 
 ## Installation
 
@@ -36,7 +36,7 @@ Caching is enabled by default (recommended) and the cache directory and duration
 Pitch files should now be loaded using the new preferred and cache-busting `pitch()` twig command.
 To upgrade, please replace `url('scss/asset.scss')` with `pitch('asset.scss)` as per the instructions below. The old method of loading pitch files will still function.
 
-Pitch now uses the new 2.x branch of the `scssphp` compiler (Craft 5 ONLY). This release is a full rewrite of the compiler.
+Pitch now uses the new 2.x branch of the `scssphp` compiler. This release is a full rewrite of the compiler.
 
 ## Using Pitch
 
