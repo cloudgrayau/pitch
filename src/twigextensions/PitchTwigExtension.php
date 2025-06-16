@@ -11,6 +11,8 @@ use Twig\TwigFunction;
 use Twig\Extension\AbstractExtension;
 
 class PitchTwigExtension extends AbstractExtension {
+  
+    private array $pitch = [];
     
     // Public Methods
     // =========================================================================
@@ -26,46 +28,49 @@ class PitchTwigExtension extends AbstractExtension {
     }
 
     public function generatePitch(string $pitch = '', bool $base = true): string {
-      $path = parse_url(FileHelper::normalizePath($pitch));
-      $paths = pathinfo($path['path']);
-      if (isset($paths['extension'])){
-        switch($paths['extension']){
-          case 'css':
-          case 'scss':
-          case 'js':
-            $output = explode('/', $paths['dirname'].'/'.$paths['filename'].'.'.$paths['extension']);
-            if (empty($output[0])){
-              array_shift($output);
-            }
-            Paths::$output = $output;
-            extract(Paths::getPaths());
-            $webroot = Craft::getAlias('@webroot').'/';
-            $settings = Pitch::getInstance()->settings;
-            $ext = strrchr($files,'.');
-            $files = explode(',', substr($files, 0, -strlen($ext)));
-            $realfiles = [];
-            $filemtime = 0;
-            foreach($files as $file){
-              $pos = strpos($file,':');
-              if (($pos !== false) && (ctype_digit(substr($file, $pos+1)))){
-                $file = substr($file, 0, $pos);
+      if (isset($this->pitch[$pitch])){
+        return ($base) ? UrlHelper::url($this->pitch[$pitch]) : ('/'.$this->pitch[$pitch]);
+      } else {
+        $path = parse_url(FileHelper::normalizePath($pitch));
+        $paths = pathinfo($path['path']);
+        if (isset($paths['extension'])){
+          switch($paths['extension']){
+            case 'css':
+            case 'scss':
+            case 'js':
+              $output = explode('/', $paths['dirname'].'/'.$paths['filename'].'.'.$paths['extension']);
+              if (empty($output[0])){
+                array_shift($output);
               }
-              $asset = FileHelper::normalizePath($webroot.$dir.$file.'.'.$paths['extension']);
-              if (file_exists($asset)){
-                $realfiles[] = $file;
-                $mtime = FileHelper::lastModifiedTime($asset);
-                if ($mtime > $filemtime){
-                  $filemtime = $mtime;
+              Paths::$output = $output;
+              extract(Paths::getPaths());
+              $webroot = Craft::getAlias('@webroot').'/';
+              $settings = Pitch::getInstance()->settings;
+              $ext = strrchr($files,'.');
+              $files = explode(',', substr($files, 0, -strlen($ext)));
+              $realfiles = [];
+              $filemtime = 0;
+              foreach($files as $file){
+                $pos = strpos($file,':');
+                if (($pos !== false) && (ctype_digit(substr($file, $pos+1)))){
+                  $file = substr($file, 0, $pos);
+                }
+                $asset = FileHelper::normalizePath($webroot.$dir.$file.'.'.$paths['extension']);
+                if (file_exists($asset)){
+                  $realfiles[] = $file;
+                  $mtime = FileHelper::lastModifiedTime($asset);
+                  if ($mtime > $filemtime){
+                    $filemtime = $mtime;
+                  }
                 }
               }
-            }
-            if ($filemtime > 0){
-              if ($base){
-                return UrlHelper::url($paths['extension'].'/'.$dir.implode(',',$realfiles).':'.$filemtime.'.'.$paths['extension']);
+              if ($filemtime > 0){
+                $url = $paths['extension'].'/'.$dir.implode(',',$realfiles).':'.$filemtime.'.'.$paths['extension'];
+                $this->pitch[$pitch] = $url;
+                return ($base) ? UrlHelper::url($url) : ('/'.$url);
               }
-              return '/'.$paths['extension'].'/'.$dir.implode(',',$realfiles).':'.$filemtime.'.'.$paths['extension'];
-            }
-            break;
+              break;
+          }
         }
       }
       return '';
