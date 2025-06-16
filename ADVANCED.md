@@ -77,4 +77,18 @@ The following conf rules are required for advanced caching to load the generated
 
 *Can anyone help with the translation of the above `.htaccess` rules for Nginx?*
 
+## Config
+
+To only use the Advanced caching mode on the production URL, you can use the example configuration file below.
+
+  <?php
+  use craft\helpers\App;
+  
+  $isDev = App::env('CRAFT_ENVIRONMENT') === 'dev';
+  return [
+    'advancedCache' => !$isDev,
+    'cacheDir' => ($isDev) ? '@storage/pitch' : '@webroot/pitch'
+  ];
+  ?>
+
 Brought to you by [Cloud Gray Pty Ltd](https://cloudgray.com.au/)
