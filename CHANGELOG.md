@@ -2,6 +2,15 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
+## 3.0.0 - 2025-06-16
+### Added
+- Added a new `pitch()` twig command, which is the new preferred cache-busting way of loading in pitch files. Please refer to the readme.
+
+### Changed
+- Upgraded the SCSS compiler to version 2 (Please note, this release is a full rewrite of the compiler).
+- Updated minimum requirement of `scssphp/scssphp` to version 2.0.1
+- Updated minimum requirement of `MatthiasMullie\Minify` to version 1.3.74
+
 ## 2.4.0 - 2024-01-25
 - Craft 5 support
 - Updated minimum requirement of `scssphp/scssphp` to version 1.12.1

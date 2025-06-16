@@ -1,4 +1,4 @@
-# Pitch for Craft CMS 4/5
+# Pitch for Craft CMS 5
 
 On the go SCSS compiling, CSS/JS minifying, merging and caching.
 
@@ -18,7 +18,7 @@ Pitch is a plugin that allows for on the go SCSS compiling, CSS/JS minifying, me
 
 ## Configuring Pitch
 
-SCSS compiling uses the latest version of [scssphp](https://scssphp.github.io/scssphp/) and two output styles are included:
+SCSS compiling uses the latest (2.x branch) version of [scssphp](https://scssphp.github.io/scssphp/) and two output styles are included:
 
 - `Expanded`
 - `Compressed` *(default)*
@@ -31,11 +31,18 @@ Caching is enabled by default (recommended) and the cache directory and duration
 
 **Advanced Caching Mode** can also be enabled, which offers superior performance but requires server rewrites and changes to the default storage path. For instructions on how to setup Advanced Caching Mode, please refer to the [ADVANCED.md](https://github.com/cloudgrayau/pitch/blob/craft4/ADVANCED.md).
 
+### 3.0.0 Upgrade Notes
+
+Pitch files should now be loaded using the new preferred and cache-busting `pitch()` twig command.
+To upgrade, please replace `url('scss/asset.scss')` with `pitch('asset.scss)` for example. The old method of loading pitch files will still function.
+
+Pitch now uses the new 2.x branch of the `scssphp` compiler. This release is a full rewrite of the compiler.
+
 ## Using Pitch
 
-- **SCSS** - `{% do view.registerCssFile(url('scss/FILENAME.scss')) %}`
-- **CSS** - `{% do view.registerCssFile(url('css/FILENAME.css')) %}`
-- **JS** - `{% do view.registerJsFile(url('js/FILENAME.js')) %}`
+- **SCSS** - `{% do view.registerCssFile(pitch('<FILENAME>.scss')) %}`
+- **CSS** - `{% do view.registerCssFile(pitch('<FILENAME>.css')) %}`
+- **JS** - `{% do view.registerJsFile(pitch('<FILENAME>.js')) %}`
 
 For [example files](https://github.com/cloudgrayau/pitch/tree/craft4/examples), please browse to the `/vendor/cloudgrayau/pitch/examples/` directory for installation.
 
@@ -51,11 +58,11 @@ Further instructions for the inline method are found below.
 
 ### SCSS ###
 
-`{% do view.registerCssFile(url('scss/style.scss')) %}` will load and compile the following SCSS file:
+`{% do view.registerCssFile(pitch('style.scss')) %}` will load and compile the following SCSS file:
 
 - `/CRAFT/web/style.scss`
 
-`{% do view.registerCssFile(url('scss/assets/style,chosen,plugin/owl.scss')) %}` will merge and compile the following SCSS files:
+`{% do view.registerCssFile(pitch('assets/style,chosen,plugin/owl.scss')) %}` will merge and compile the following SCSS files:
 
 - `/CRAFT/web/assets/style.scss`
 - `/CRAFT/web/assets/chosen.scss`
@@ -63,17 +70,19 @@ Further instructions for the inline method are found below.
 
 All files being merged will need to have the `.scss` extension.
 
-In SCSS, `$baseUrl` refers to the relative `@web` directory (no trailing slash).
+In SCSS, `#{$baseUrl}` refers to the relative `@web` directory (no trailing slash).
+
+Please note, the old method of loading SCSS files via `{% do view.registerCssFile(url('scss/style.scss')) %}` will still work.
 
 --------
 
 ### CSS ###
 
-`{% do view.registerCssFile(url('css/style.css')) %}` will load and minify the following CSS file:
+`{% do view.registerCssFile(pitch('style.css')) %}` will load and minify the following CSS file:
 
 - `/CRAFT/web/style.css`
 
-`{% do view.registerCssFile(url('css/assets/style,chosen,plugin/owl.css')) %}` will merge and minify the following CSS files:
+`{% do view.registerCssFile(pitch('assets/style,chosen,plugin/owl.css')) %}` will merge and minify the following CSS files:
 
 - `/CRAFT/web/assets/style.css`
 - `/CRAFT/web/assets/chosen.css`
@@ -81,15 +90,19 @@ In SCSS, `$baseUrl` refers to the relative `@web` directory (no trailing slash).
 
 All files being merged will need to have the `.css` extension.
 
+In CSS, `#{$baseUrl}` refers to the relative `@web` directory (no trailing slash).
+
+Please note, the old method of loading CSS files via `{% do view.registerCssFile(url('css/style.css')) %}` will still work.
+
 --------
 
 ### JS ###
 
-`{% do view.registerJsFile(url('js/script.js')) %}` will load and minify the following JS file:
+`{% do view.registerJsFile(pitch('script.js')) %}` will load and minify the following JS file:
 
 - `/CRAFT/web/script.js`
 
-`{% do view.registerJsFile(url('js/assets/script,chosen,plugin/owl.js')) %}` will merge and minify the following JS files:
+`{% do view.registerJsFile(pitch('assets/script,chosen,plugin/owl.js')) %}` will merge and minify the following JS files:
 
 - `/CRAFT/web/assets/script.js`
 - `/CRAFT/web/assets/chosen.js`
@@ -99,9 +112,15 @@ All files being merged will need to have the `.js` extension.
 
 In JS, `$baseUrl` refers to the relative `@web` directory (no trailing slash).
 
+Please note, the old method of loading JS files via `{% do view.registerCssFile(url('js/script.js')) %}` will still work.
+
 --------
 
-You can also force the browser to re-cache asset files by using `:DIGIT` in the asset URL prior to the extension, for example `'js/assets/site,plugin/chosen:01.js'`.
+## Cache Busting ##
+
+The new twig `pitch()` command will automatically embed the last-modified date of the file/s into the compiled filename.
+
+If using the old import method, you can also force the browser to re-cache asset files by using `:DIGIT` in the asset URL prior to the extension, for example `'js/assets/site,plugin/chosen:01.js'`.
 
 Whilst in development mode, the browser cache of all assets will be forced to refresh on each page load.
 

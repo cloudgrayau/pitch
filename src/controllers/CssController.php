@@ -22,21 +22,8 @@ class CssController extends Controller {
   // =========================================================================
 
   public function actionIndex(): void {
-    Paths::doInit();
-    $output = Paths::$output;
-    array_pop($output);
-    $string = implode('/', $output);
-    if (($val = stripos($string, ',')) && ($val !== false)){
-      $url = implode('/', Paths::$output);
-      $dir = explode('/', substr($url, 0, $val));
-      $original = array_pop($dir);
-      $dir = implode('/', $dir).'/';
-      $files = $original.','.substr($url, $val+1);
-    } else {
-      $files = array_pop(Paths::$output);
-      $dir = implode('/', Paths::$output).'/';
-    }
-    if ($result = self::initCSS($dir, $files)){
+    $paths = Paths::getPaths();
+    if ($result = self::initCSS($paths['dir'], $paths['files'])){
       exit();
     }
     throw new NotFoundHttpException('Page not found.');
@@ -96,9 +83,9 @@ class CssController extends Controller {
         case 'scss':
           $scss = new Compiler();
           $scss->setImportPaths(FileHelper::normalizePath($webroot.$dir).'/');
-          $scss->setVariables(array(
-            'baseUrl' => Craft::$app->getRequest()->baseUrl,
-          ));
+          /*$scss->addVariables(array(
+            'test' => \ScssPhp\ScssPhp\ValueConverter::parseValue('1px'),
+          ));*/
           $format = $settings->cssFormat;
           switch($format){ /* Depreciated scssphp 1.4 */
             case 'Compact':
@@ -112,7 +99,7 @@ class CssController extends Controller {
               break;
           }
           $scss->setOutputStyle($format);
-          echo $scss->compileString($css)->getCss();
+          echo $scss->compileString(str_replace('#{$baseUrl}', Craft::$app->getRequest()->baseUrl, $css))->getCss();
           break;
         default:
           if ($settings->minifyFiles){
