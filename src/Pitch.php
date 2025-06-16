@@ -4,7 +4,6 @@ namespace cloudgrayau\pitch;
 use cloudgrayau\pitch\models\Settings;
 use cloudgrayau\pitch\controllers\CacheController;
 use cloudgrayau\pitch\variables\PitchVariable;
-use cloudgrayau\pitch\twigextensions\PitchTwigExtension;
 use cloudgrayau\utils\UtilityHelper;
 
 use Craft;
@@ -44,7 +43,6 @@ class Pitch extends Plugin {
     $this->_registerConsole();
     $this->_registerCache();
     $this->_registerVariables();
-    $this->_registerTwigExtensions();
     $this->_registerUrlRules();
     $this->_registerCpUrlRules();
   }
@@ -114,10 +112,6 @@ class Pitch extends Plugin {
       $event->sender->set('pitch', PitchVariable::class);
     });
   }
-  
-  private function _registerTwigExtensions(): void {
-      Craft::$app->getView()->registerTwigExtension(new PitchTwigExtension());
-   }
   
   private function _registerUrlRules(): void {
     Event::on(
