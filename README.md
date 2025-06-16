@@ -29,7 +29,7 @@ Caching is enabled by default (recommended) and the cache directory and duration
 
 ### Advanced Caching Mode
 
-**Advanced Caching Mode** can also be enabled, which offers superior performance but requires server rewrites and changes to the default storage path. For instructions on how to setup Advanced Caching Mode, please refer to the [ADVANCED.md](https://github.com/cloudgrayau/pitch/blob/craft4/ADVANCED.md).
+**Advanced Caching Mode** can also be enabled, which offers superior performance but requires server rewrites and changes to the default storage path. For instructions on how to setup Advanced Caching Mode, please refer to the [ADVANCED.md](https://github.com/cloudgrayau/pitch/blob/craft5/ADVANCED.md).
 
 ### 3.0.0 Upgrade Notes
 
@@ -44,7 +44,7 @@ Pitch now uses the new 2.x branch of the `scssphp` compiler. This release is a f
 - **CSS** - `{% do view.registerCssFile(pitch('<FILENAME>.css')) %}`
 - **JS** - `{% do view.registerJsFile(pitch('<FILENAME>.js')) %}`
 
-For [example files](https://github.com/cloudgrayau/pitch/tree/craft4/examples), please browse to the `/vendor/cloudgrayau/pitch/examples/` directory for installation.
+For [example files](https://github.com/cloudgrayau/pitch/tree/craft5/examples), please browse to the `/vendor/cloudgrayau/pitch/examples/` directory for installation.
 
 You can now compile inline SCSS and minify CSS/JS directly via your templates in Twig.
 
