@@ -30,7 +30,7 @@ Caching is enabled by default (recommended) and the cache directory and duration
 ## 3.0.0 Upgrade Notes
 
 Pitch files should now be loaded using the new preferred and cache-busting `pitch()` twig command.
-To upgrade, please replace `url('scss/asset.scss')` with `pitch('asset.scss)` as per the instructions below. The old method of loading pitch files will still function.
+To upgrade, please replace `url('scss/asset.scss')` with `pitch('asset.scss')` for example, as per the instructions below. The old method of loading pitch files will still function.
 
 For Craft 5, Pitch now uses the version 2 branch of the `scssphp` compiler. This release is a full rewrite of the compiler and requires >= PHP8.1.
 
