@@ -19,5 +19,5 @@ return [
   'useCache' => true,
   'advancedCache' => false,
   'cacheDir' => '@storage/pitch',
-  'cacheDuration' => 2592000
+  'cacheDuration' => 31536000
 ];

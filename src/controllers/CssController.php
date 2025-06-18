@@ -71,8 +71,6 @@ class CssController extends Controller {
     }
     header('Last-Modified: '.gmdate('D, d M Y H:i:s', $filemtime).' GMT');
     header('Expires: ' .gmdate('D, d M Y H:i:s',$_SERVER['REQUEST_TIME'] + $offset) . ' GMT');
-    header('Link: <'.$_SERVER['REQUEST_URI'].'>; rel=preload; as=style;');
-    header('Connection: keep-alive');
     $cacheDir = (!empty($settings->cacheDir)) ? $settings->cacheDir : '@storage/pitch';
     $cacheFolderPath = FileHelper::normalizePath(
       App::parseEnv($cacheDir)

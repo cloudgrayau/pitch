@@ -27,7 +27,7 @@ class Settings extends Model {
   public bool $useCache = true;
   public bool $advancedCache = false;
   public string $cacheDir = '';
-  public int $cacheDuration = 2592000;
+  public int $cacheDuration = 31536000;
   
   // Public Methods
   // =========================================================================

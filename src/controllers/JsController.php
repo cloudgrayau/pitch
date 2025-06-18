@@ -55,7 +55,7 @@ class JsController extends Controller {
     if ($filemtime == 0){
       return false;
     }
-    $offset = ($settings->cacheDuration > 0) ? $settings->cacheDuration : 2592000;
+    $offset = ($settings->cacheDuration > 0) ? $settings->cacheDuration : 31536000;
     ob_start('ob_gzhandler');
     header('Content-Type: text/javascript; charset=utf-8');
     if (Craft::$app->getConfig()->general->devMode){
@@ -66,8 +66,6 @@ class JsController extends Controller {
     }
     header('Last-Modified: '.gmdate('D, d M Y H:i:s', $filemtime).' GMT');
     header('Expires: ' .gmdate('D, d M Y H:i:s',$_SERVER['REQUEST_TIME'] + $offset) . ' GMT');
-    header('Link: <'.$_SERVER['REQUEST_URI'].'>; rel=preload; as=script;');
-    header('Connection: keep-alive');
     $cacheDir = (!empty($settings->cacheDir)) ? $settings->cacheDir : '@storage/pitch';
     $cacheFolderPath = FileHelper::normalizePath(
       App::parseEnv($cacheDir)
