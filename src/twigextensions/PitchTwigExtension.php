@@ -79,7 +79,7 @@ class PitchTwigExtension extends AbstractExtension {
       return '';
     }
     
-    public function generateSRI(string $pitch = '', string $hash = 'sha384'): string {
+    public function generateSRI(string $pitch = '', string $hash = 'sha384'): mixed {
       if (getenv('CRAFT_ENVIRONMENT') !== 'dev'){
         if (isset($this->pitch[$pitch])){
           $filename = $this->pitch[$pitch];
