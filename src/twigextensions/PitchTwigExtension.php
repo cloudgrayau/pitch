@@ -3,8 +3,10 @@ namespace cloudgrayau\pitch\twigextensions;
 
 use cloudgrayau\pitch\Pitch;
 use cloudgrayau\pitch\models\Paths;
+use cloudgrayau\pitch\models\Cached;
 
 use Craft;
+use craft\helpers\App;
 use craft\helpers\FileHelper;
 use craft\helpers\UrlHelper;
 use Twig\TwigFunction;
@@ -24,6 +26,7 @@ class PitchTwigExtension extends AbstractExtension {
     public function getFunctions(): array {
         return [
             new TwigFunction('pitch', [$this, 'generatePitch']),
+            new TwigFunction('pitch_sri', [$this, 'generateSRI']),
         ];
     }
 
@@ -74,6 +77,27 @@ class PitchTwigExtension extends AbstractExtension {
         }
       }
       return '';
+    }
+    
+    public function generateSRI(string $pitch = '', string $hash = 'sha384'): string {
+      if (getenv('CRAFT_ENVIRONMENT') == 'dev'){
+        if (isset($this->pitch[$pitch])){
+          $filename = $this->pitch[$pitch];
+          $settings = Pitch::getInstance()->settings;
+          $cacheDir = (!empty($settings->cacheDir)) ? $settings->cacheDir : '@storage/pitch';
+          $cacheFolderPath = FileHelper::normalizePath(
+            App::parseEnv($cacheDir)
+          ).'/';
+          $c = new Cached($cacheFolderPath, false, $settings->advancedCache);
+          if ($tmp_file = $c->generateURL($filename)){
+            $cachefile = FileHelper::normalizePath($cacheFolderPath.$tmp_file);
+            if (file_exists($cachefile)) {
+              return $hash.'-'.base64_encode(hash_file($hash, $cachefile, true));
+            }
+          }
+        }
+      }
+      return false;
     }
     
 }

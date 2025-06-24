@@ -24,12 +24,13 @@ class Cached extends Model {
     $this->advanced = $advanced;
   }
 
-  final public function generateURL(): string {
-    $parts = pathinfo($this->filename);
+  final public function generateURL(string $filename = ''): string {
+    $file = (!empty($this->filename)) ? $this->filename : $filename;
+    $parts = pathinfo($file);
     if ($this->advanced){
       return $parts['dirname'].'/'.$parts['basename'];
     } else {
-      return md5($this->filename).'.'.$parts['extension'];
+      return md5($file).'.'.$parts['extension'];
     }
   }
 
