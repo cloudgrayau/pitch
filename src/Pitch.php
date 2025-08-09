@@ -10,11 +10,13 @@ use cloudgrayau\utils\UtilityHelper;
 
 use Craft;
 use craft\base\Plugin;
+use craft\services\Dashboard;
 use craft\services\Plugins;
 use craft\events\PluginEvent;
 use craft\web\UrlManager;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\RegisterCacheOptionsEvent;
+use craft\events\RegisterComponentTypesEvent;
 use craft\console\Application as ConsoleApplication;
 use craft\web\twig\variables\CraftVariable;
 
@@ -31,6 +33,7 @@ class Pitch extends Plugin {
   public string $schemaVersion = '1.0.0';
   public bool $hasCpSettings = true;
   public bool $hasCpSection = false;
+  private ?PitchTwigExtension $twigExtension = null;
   private string $cacheDir = '';
 
   // Public Methods
@@ -60,6 +63,42 @@ class Pitch extends Plugin {
     ).'/';    
     if (is_dir($cacheFolderPath)){
       FileHelper::clearDirectory($cacheFolderPath);
+    }
+    if (!$this->settings->advancedCache){
+      $directoryPath = CRAFT_BASE_PATH.'/templates/';
+      $pattern = '/\bpitch\s*\(\s*(?!\/|\\\\[\'"])((?:\'(?:[^\'\\\\]|\\\\.)*\'|"(?:[^"\\\\]|\\\\.)*"|[^\'",\)]+)*)\s*(?:,|\))/';
+      $output = [];
+      if (function_exists('exec')) {
+        exec('grep -rl "pitch(" '.$directoryPath, $output);
+      } else {
+        try {
+          $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directoryPath, \RecursiveDirectoryIterator::SKIP_DOTS),\RecursiveIteratorIterator::LEAVES_ONLY);
+          foreach ($iterator as $file){
+            if ($file->isFile()){
+              $output[] = $file;
+            }
+          }
+        } catch (\UnexpectedValueException $e){
+        }
+      }
+      $pitch = [];
+      foreach($output as $file){
+        $data = file_get_contents($file);
+        preg_match_all($pattern, $data, $matches, PREG_SET_ORDER);
+        foreach($matches as $match){
+          $pitchUrl = $this->twigExtension->generatePitch(str_replace(['\'','~'],'',$match[1]), false);
+          if ($pitchUrl){
+            $url = UrlHelper::siteUrl($pitchUrl);
+            if (!in_array($url, $pitch)){
+              $pitch[] = $url;
+            }
+          }
+        }
+      }
+      if (!empty($pitch)){
+        print_r($pitch);
+        die();
+      }
     }
     if (!$util){
       Craft::$app->response
@@ -120,8 +159,9 @@ class Pitch extends Plugin {
   }
   
   private function _registerTwigExtensions(): void {
-      Craft::$app->getView()->registerTwigExtension(new PitchTwigExtension());
-   }
+    $this->twigExtension = new PitchTwigExtension();
+    Craft::$app->getView()->registerTwigExtension($this->twigExtension);
+  }
   
   private function _registerUrlRules(): void {
     Event::on(
@@ -149,9 +189,7 @@ class Pitch extends Plugin {
   private function _registerWidgets(): void {
     Event::on(Dashboard::class, Dashboard::EVENT_REGISTER_WIDGET_TYPES,
       function(RegisterComponentTypesEvent $event) {
-        if (!empty(CacheWidget::getActions())) {
-          $event->types[] = CacheWidget::class;
-        }
+        $event->types[] = CacheWidget::class;
       }
     );
   }

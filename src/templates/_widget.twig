@@ -1,16 +1,10 @@
 {% import "_includes/forms" as forms %}
-{% for action in actions %}
-    <div class="action">
-        <div class="heading">
-            <span class="icon">{{ action.icon|raw }}</span>
-            {{ action.instructions }}
-        </div>
-        <div class="form hidden">
-            <form method="post" accept-charset="UTF-8">
-                {{ actionInput('blitz/cache/' ~ action.id) }}
-                {{ csrfInput() }}
-                <input type="submit" class="btn submit fullwidth" value="{{ action.label }}">
-            </form>
-        </div>
-    </div>
-{% endfor %}
+<div class="action">
+  <div class="form">
+    <form method="post" accept-charset="UTF-8">
+      {{ actionInput('pitch/cache/refresh') }}
+      {{ csrfInput() }}
+      <input type="submit" class="btn submit fullwidth" value="Refresh Entire Cache">
+    </form>
+  </div>
+</div>

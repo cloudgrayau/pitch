@@ -9,7 +9,7 @@ use cloudgrayau\pitch\Pitch;
 class CacheWidget extends Widget {
 
   public static function displayName(): string {
-    return Craft::t('pitch', 'Pitch Cache');
+    return Craft::t('pitch', 'Pitch');
   }
   
   protected static function allowMultipleInstances(): bool {
@@ -24,20 +24,8 @@ class CacheWidget extends Widget {
     return 1;
   }
   
-  public static function getActions(): array {
-    $iconPath = '@cloudgrayau/pitch/resources/';
-    return [
-      'id' => 'refresh',
-      'label' => Craft::t('pitch', 'Refresh Entire Cache'),
-      'instructions' => Craft::t('pitch', 'Refresh the entire cache'),
-      'icon' => Html::svg($iconPath . 'refresh.svg'),
-    ];
-  }
-  
   public function getBodyHtml(): ?string {
-    return Craft::$app->getView()->renderTemplate('pitch/_widget', [
-      'actions' => static::getActions(),
-    ]);
+    return Craft::$app->getView()->renderTemplate('pitch/_widget');
   }
 
 }

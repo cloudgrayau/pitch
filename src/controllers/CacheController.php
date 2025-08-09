@@ -12,6 +12,11 @@ class CacheController extends Controller {
 
   // Public Methods
   // =========================================================================
+  
+  public function actionRefresh(): void {
+    $this->setSuccessFlash(Craft::t('app', 'Cache successfully cleared.'));
+    Pitch::getInstance()->clearCache(true);
+  }
 
   public function actionClearCache(): void {
     $this->setSuccessFlash(Craft::t('app', 'Cache successfully cleared.'));
