@@ -5,6 +5,7 @@ use cloudgrayau\pitch\models\Settings;
 use cloudgrayau\pitch\controllers\CacheController;
 use cloudgrayau\pitch\variables\PitchVariable;
 use cloudgrayau\pitch\twigextensions\PitchTwigExtension;
+use cloudgrayau\pitch\widgets\CacheWidget;
 use cloudgrayau\utils\UtilityHelper;
 
 use Craft;
@@ -46,7 +47,10 @@ class Pitch extends Plugin {
     $this->_registerVariables();
     $this->_registerTwigExtensions();
     $this->_registerUrlRules();
-    $this->_registerCpUrlRules();
+    if (Craft::$app->getRequest()->getIsCpRequest()) {
+      $this->_registerCpUrlRules();
+      $this->_registerWidgets();
+    }
   }
 
   public function clearCache($util=false): void {
@@ -138,6 +142,16 @@ class Pitch extends Plugin {
       UrlManager::EVENT_REGISTER_CP_URL_RULES,
       function (RegisterUrlRulesEvent $event){
         $event->rules['pitch/clear'] = 'pitch/cache/clear-cache';
+      }
+    );
+  }
+  
+  private function _registerWidgets(): void {
+    Event::on(Dashboard::class, Dashboard::EVENT_REGISTER_WIDGET_TYPES,
+      function(RegisterComponentTypesEvent $event) {
+        if (!empty(CacheWidget::getActions())) {
+          $event->types[] = CacheWidget::class;
+        }
       }
     );
   }
