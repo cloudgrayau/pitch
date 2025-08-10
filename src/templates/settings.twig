@@ -30,7 +30,7 @@
 }) }}
 {{ forms.lightswitchField({
     label: "Regenerate Cache",
-    instructions: "Whether Pitch should try and automatically regenerate the cache when cleared.",
+    instructions: "Whether Pitch should try and automatically regenerate the cache when cleared (disabled in development mode).",
     name: 'regenerateCache',
     on: settings.regenerateCache,
     errors: settings.getErrors('regenerateCache'),
