@@ -32,7 +32,7 @@ class PitchTwigExtension extends AbstractExtension {
 
     public function generatePitch(string $pitch = '', bool $base = true): string {
       if (isset($this->pitch[$pitch])){
-        return ($base) ? UrlHelper::url($this->pitch[$pitch]) : ('/'.$this->pitch[$pitch]);
+        return ($base) ? UrlHelper::siteUrl($this->pitch[$pitch]) : ('/'.$this->pitch[$pitch]);
       } else {
         $path = parse_url(FileHelper::normalizePath($pitch));
         $paths = pathinfo($path['path']);
@@ -70,7 +70,7 @@ class PitchTwigExtension extends AbstractExtension {
               if ($filemtime > 0){
                 $url = $paths['extension'].'/'.$dir.implode(',',$realfiles).':'.$filemtime.'.'.$paths['extension'];
                 $this->pitch[$pitch] = $url;
-                return ($base) ? UrlHelper::url($url) : ('/'.$url);
+                return ($base) ? UrlHelper::siteUrl($url) : ('/'.$url);
               }
               break;
           }
