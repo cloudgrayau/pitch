@@ -32,6 +32,8 @@ Caching is enabled by default (recommended) and the cache directory and duration
 Pitch files should now be loaded using the new preferred and cache-busting `pitch()` twig command.
 To upgrade, please replace `url('scss/asset.scss')` with `pitch('asset.scss')` for example, as per the instructions below. The old method of loading pitch files will still function.
 
+Pitch will now scan the template files and try to automatically regenerate the cache after the cache has been cleared (this is disabled in development mode).
+
 For Craft 5, Pitch now uses the version 2 branch of the `scssphp` compiler. This release is a full rewrite of the compiler and requires >= PHP8.1.
 
 ## Advanced Caching Mode
@@ -118,9 +120,11 @@ Please note, the old method of loading JS files via `{% do view.registerCssFile(
 
 ## Cache Busting ##
 
-The new twig `pitch()` command will automatically embed the last-modified date of the file/s into the compiled filename. On clearing the pitch cache, Pitch will now scan the template files and try to automatically regenerate the cache.
+The new twig `pitch()` command will automatically embed the last-modified date of the file/s into the compiled filename.
 
-If using the old import method, you can also force the browser to re-cache asset files by using `:DIGIT` in the asset URL prior to the extension, for example `'js/assets/site,plugin/chosen:01.js'`.
+Pitch will also now scan the template files and try to automatically regenerate the cache after the cache has been cleared (this is disabled in development mode).
+
+If using the old load method, you can also force the browser to re-cache asset files by using `:DIGIT` in the asset URL prior to the extension, for example `'js/assets/site,plugin/chosen:01.js'`.
 
 Whilst in development mode, the browser cache of all assets will be forced to refresh on each page load.
 
