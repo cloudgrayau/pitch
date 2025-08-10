@@ -29,6 +29,14 @@
     warning: macros.configWarning('useCache', 'pitch')
 }) }}
 {{ forms.lightswitchField({
+    label: "Regenerate Cache",
+    instructions: "Whether Pitch should try and automatically regenerate the cache when cleared.",
+    name: 'regenerateCache',
+    on: settings.regenerateCache,
+    errors: settings.getErrors('regenerateCache'),
+    warning: macros.configWarning('regenerateCache', 'pitch')
+}) }}
+{{ forms.lightswitchField({
     label: "Enable Advanced Caching",
     instructions: "Whether advanced caching should be enabled. Offers superior performance but requires <a href=\"https://github.com/cloudgrayau/pitch/blob/main/ADVANCED.md\" target=\"_blank\">server rewrites</a> and changes to the <a href=\"https://github.com/cloudgrayau/pitch/blob/main/ADVANCED.md\" target=\"_blank\">default storage path</a>.<br /><em>Recommended for use in production environments. This setting is ignored if 'Enable Cache' is disabled.</em>",
     name: 'advancedCache',

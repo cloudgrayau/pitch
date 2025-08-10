@@ -25,7 +25,7 @@ class Settings extends Model {
   public string $cssFormat = 'Compressed';
   public bool $minifyFiles = true;
   public bool $useCache = true;
-  public book $regenerateCache = true;
+  public bool $regenerateCache = true;
   public bool $advancedCache = false;
   public string $cacheDir = '';
   public int $cacheDuration = 31536000;
