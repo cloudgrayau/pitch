@@ -3,6 +3,7 @@ namespace cloudgrayau\pitch;
 
 use cloudgrayau\pitch\models\Settings;
 use cloudgrayau\pitch\controllers\CacheController;
+use cloudgrayau\pitch\jobs\CacheJob;
 use cloudgrayau\pitch\variables\PitchVariable;
 use cloudgrayau\pitch\twigextensions\PitchTwigExtension;
 use cloudgrayau\pitch\widgets\CacheWidget;
@@ -33,7 +34,7 @@ class Pitch extends Plugin {
   public string $schemaVersion = '1.0.0';
   public bool $hasCpSettings = true;
   public bool $hasCpSection = false;
-  private ?PitchTwigExtension $twigExtension = null;
+  public ?PitchTwigExtension $twigExtension = null;
   private string $cacheDir = '';
 
   // Public Methods
@@ -64,41 +65,9 @@ class Pitch extends Plugin {
     if (is_dir($cacheFolderPath)){
       FileHelper::clearDirectory($cacheFolderPath);
     }
-    if (!$this->settings->advancedCache){
-      $directoryPath = CRAFT_BASE_PATH.'/templates/';
-      $pattern = '/\bpitch\s*\(\s*(?!\/|\\\\[\'"])((?:\'(?:[^\'\\\\]|\\\\.)*\'|"(?:[^"\\\\]|\\\\.)*"|[^\'",\)]+)*)\s*(?:,|\))/';
-      $output = [];
-      if (function_exists('exec')) {
-        exec('grep -rl "pitch(" '.$directoryPath, $output);
-      } else {
-        try {
-          $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directoryPath, \RecursiveDirectoryIterator::SKIP_DOTS),\RecursiveIteratorIterator::LEAVES_ONLY);
-          foreach ($iterator as $file){
-            if ($file->isFile()){
-              $output[] = $file;
-            }
-          }
-        } catch (\UnexpectedValueException $e){
-        }
-      }
-      $pitch = [];
-      foreach($output as $file){
-        $data = file_get_contents($file);
-        preg_match_all($pattern, $data, $matches, PREG_SET_ORDER);
-        foreach($matches as $match){
-          $pitchUrl = $this->twigExtension->generatePitch(str_replace(['\'','~'],'',$match[1]), false);
-          if ($pitchUrl){
-            $url = UrlHelper::siteUrl($pitchUrl);
-            if (!in_array($url, $pitch)){
-              $pitch[] = $url;
-            }
-          }
-        }
-      }
-      if (!empty($pitch)){
-        print_r($pitch);
-        die();
-      }
+    $devMode = App::devMode();
+    if (!$devMode && $this->settings->regenerateCache){
+      Craft::$app->queue->push(new CacheJob(), 10);
     }
     if (!$util){
       Craft::$app->response

@@ -25,6 +25,7 @@ class Settings extends Model {
   public string $cssFormat = 'Compressed';
   public bool $minifyFiles = true;
   public bool $useCache = true;
+  public book $regenerateCache = true;
   public bool $advancedCache = false;
   public string $cacheDir = '';
   public int $cacheDuration = 31536000;
@@ -35,7 +36,7 @@ class Settings extends Model {
   public function rules(): array {
     return [
       [['cacheDir','cssFormat'], 'string'],
-      [['minifyFiles', 'useCache', 'advancedCache'], 'boolean'],
+      [['minifyFiles','useCache','regenerateCache','advancedCache'], 'boolean'],
       ['cacheDuration', 'integer', 'min' => 0],
       ['cacheDir', 'validateDir']
     ];

@@ -17,6 +17,7 @@ return [
   'cssFormat' => 'Compressed',
   'minifyFiles' => true,
   'useCache' => true,
+  'regenerateCache' => true,
   'advancedCache' => false,
   'cacheDir' => '@storage/pitch',
   'cacheDuration' => 31536000
