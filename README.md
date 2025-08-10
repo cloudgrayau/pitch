@@ -118,11 +118,19 @@ Please note, the old method of loading JS files via `{% do view.registerCssFile(
 
 ## Cache Busting ##
 
-The new twig `pitch()` command will automatically embed the last-modified date of the file/s into the compiled filename.
+The new twig `pitch()` command will automatically embed the last-modified date of the file/s into the compiled filename. On clearing the pitch cache, Pitch will now scan the template files and try to automatically regenerate the cache.
 
 If using the old import method, you can also force the browser to re-cache asset files by using `:DIGIT` in the asset URL prior to the extension, for example `'js/assets/site,plugin/chosen:01.js'`.
 
 Whilst in development mode, the browser cache of all assets will be forced to refresh on each page load.
+
+## Subresource Integrity (SRI) ##
+
+You can generate a SRI for pitch files, using the new twig `pitch_sri(<FILE>, <HASH>)` command. By default, it will use sha384 and it should only be used in tandom with the `pitch()` command. For example:
+
+`{% do view.registerJsFile(pitch('script.js'), {type:'module',integrity:pitch_sri('script.js', 'sha512')}) %}`
+
+Please note, the SRI will only be generated after the cache file has been generated.
 
 ## Inline Compiling & Minifying
 
@@ -145,5 +153,6 @@ The Pitch cache can be cleared via the following methods:
 1. Via the CraftCMS Settings => Pitch
 2. Via the CraftCMS Utilities => Caches
 3. Via the console `./craft pitch/clear`
+4. Via the CraftCMS Dashboard Widget
 
 Brought to you by [Cloud Gray Pty Ltd](https://cloudgray.com.au/)

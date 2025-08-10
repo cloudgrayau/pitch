@@ -2,6 +2,15 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
+## 3.1.0 - 2025-08-11
+### Added
+- Added a dashboard widget for clearing the Pitch cache
+- Added a new `pitch_sri()` command for generating a subresource integrity hash
+- Added a `regenerateCache` config setting (enabled by default); if enabled, Pitch will now scan the template files and try to automatically regenerate the cache after the cache has been cleared (this is disabled in development mode).
+
+### Changed
+- Updated minimum requirement of `MatthiasMullie\Minify` to version 1.3.75
+
 ## 3.0.1 - 2025-06-16
 ### Changed
 - Performance adjustment for subsequent `pitch()` generations
