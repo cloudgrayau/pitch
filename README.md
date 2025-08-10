@@ -120,9 +120,7 @@ Please note, the old method of loading JS files via `{% do view.registerCssFile(
 
 ## Cache Busting ##
 
-The new twig `pitch()` command will automatically embed the last-modified date of the file/s into the compiled filename.
-
-Pitch will also now scan the template files and try to automatically regenerate the cache after the cache has been cleared (this is disabled in development mode).
+The new twig `pitch()` command will automatically embed the last-modified date of the file/s into the compiled filename. Pitch will also scan the template files and try to automatically regenerate the cache after the cache has been cleared (this is disabled in development mode).
 
 If using the old load method, you can also force the browser to re-cache asset files by using `:DIGIT` in the asset URL prior to the extension, for example `'js/assets/site,plugin/chosen:01.js'`.
 
@@ -154,9 +152,9 @@ The Inline Compiling & Minifying integrates great with the [Code Field](https://
 
 The Pitch cache can be cleared via the following methods:
 	
-1. Via the CraftCMS Settings => Pitch
-2. Via the CraftCMS Utilities => Caches
-3. Via the console `./craft pitch/clear`
-4. Via the CraftCMS Dashboard Widget
+1. Via the CraftCMS Dashboard Widget
+2. Via the CraftCMS Settings => Pitch
+3. Via the CraftCMS Utilities => Caches
+4. Via the console `./craft pitch/clear`
 
 Brought to you by [Cloud Gray Pty Ltd](https://cloudgray.com.au/)
