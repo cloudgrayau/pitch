@@ -60,6 +60,7 @@ class CacheJob extends BaseJob {
           curl_setopt($curl, CURLOPT_NOBODY, true);
           curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
           curl_setopt($curl, CURLOPT_HEADER, true);
+          curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
           curl_exec($curl);
         } catch (\Exception $e) {
         }

@@ -2,7 +2,7 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
-## 3.1.0 - 2025-08-11
+## 3.1.1 - 2025-08-11
 ### Added
 - Added a dashboard widget for clearing the Pitch cache
 - Added a new `pitch_sri()` command for generating a subresource integrity hash
