@@ -56,7 +56,7 @@ class CacheJob extends BaseJob {
           ])
         );
         try {
-          curl_setopt($curl, CURLOPT_URL, $file);
+          curl_setopt($curl, CURLOPT_URL, $file.'?'.$_SERVER['REQUEST_TIME']);
           curl_setopt($curl, CURLOPT_NOBODY, true);
           curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
           curl_setopt($curl, CURLOPT_HEADER, true);
