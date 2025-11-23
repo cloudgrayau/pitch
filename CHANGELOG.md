@@ -2,6 +2,10 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
+## 3.1.2 - 2025-11-23
+### Changed
+- Updated Craft 5 minimum requirement of `scssphp/scssphp` to version 2.1.0 (fixes @import issues)
+
 ## 3.1.1 - 2025-08-11
 ### Added
 - Added a dashboard widget for clearing the Pitch cache
