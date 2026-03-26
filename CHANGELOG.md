@@ -2,6 +2,10 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
+## 3.1.3 - 2026-03-26
+### Added
+- Ability to add or override PHP headers on pitch generated files (config file only)
+
 ## 3.1.2 - 2025-11-23
 ### Changed
 - Updated Craft 5 minimum requirement of `scssphp/scssphp` to version 2.1.0 (fixes @import issues)

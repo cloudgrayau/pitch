@@ -8,6 +8,7 @@ use craft\base\Model;
 use craft\helpers\App;
 use craft\helpers\FileHelper;
 use craft\helpers\UrlHelper;
+use craft\validators\ArrayValidator;
 
 class Settings extends Model {
   
@@ -29,6 +30,7 @@ class Settings extends Model {
   public bool $advancedCache = false;
   public string $cacheDir = '';
   public int $cacheDuration = 31536000;
+  public array $fileHeaders = [];
   
   // Public Methods
   // =========================================================================
@@ -37,6 +39,7 @@ class Settings extends Model {
     return [
       [['cacheDir','cssFormat'], 'string'],
       [['minifyFiles','useCache','regenerateCache','advancedCache'], 'boolean'],
+      [['fileHeaders'], ArrayValidator::class],
       ['cacheDuration', 'integer', 'min' => 0],
       ['cacheDir', 'validateDir']
     ];

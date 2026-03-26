@@ -20,5 +20,7 @@ return [
   'regenerateCache' => true,
   'advancedCache' => false,
   'cacheDir' => '@storage/pitch',
-  'cacheDuration' => 31536000
+  'cacheDuration' => 31536000,
+  'fileHeaders' => [
+  ]
 ];
