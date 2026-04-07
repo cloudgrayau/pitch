@@ -87,9 +87,9 @@ class CssController extends Controller {
         case 'scss':
           $scss = new Compiler();
           $scss->setImportPaths(FileHelper::normalizePath($webroot.$dir).'/');
-          /*$scss->addVariables(array(
-            'test' => \ScssPhp\ScssPhp\ValueConverter::parseValue('1px'),
-          ));*/
+          $scss->replaceVariables([
+            'baseUrl' => \ScssPhp\ScssPhp\ValueConverter::parseValue(Craft::$app->getRequest()->baseUrl)
+          ]);
           $format = $settings->cssFormat;
           switch($format){ /* Depreciated scssphp 1.4 */
             case 'Compact':
@@ -103,7 +103,7 @@ class CssController extends Controller {
               break;
           }
           $scss->setOutputStyle($format);
-          echo $scss->compileString(str_replace('#{$baseUrl}', Craft::$app->getRequest()->baseUrl, $css))->getCss();
+          echo $scss->compileString($css)->getCss();
           break;
         default:
           if ($settings->minifyFiles){

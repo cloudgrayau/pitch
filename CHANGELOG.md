@@ -2,6 +2,10 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
+## 3.1.4 - 2026-04-07
+### Changed
+- Fixed `#{$baseUrl}` variable in SCSS.
+
 ## 3.1.3 - 2026-03-26
 ### Added
 - Ability to add or override PHP headers on pitch generated files (config file only)
