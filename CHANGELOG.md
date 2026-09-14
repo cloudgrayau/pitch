@@ -2,6 +2,10 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
+## 3.1.5 - 2026-09-14
+### Changed
+- Fixed blank `#{$baseUrl}` variable in SCSS (live environments).
+
 ## 3.1.4 - 2026-04-07
 ### Changed
 - Fixed `#{$baseUrl}` variable in SCSS.

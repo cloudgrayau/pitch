@@ -88,7 +88,7 @@ class CssController extends Controller {
           $scss = new Compiler();
           $scss->setImportPaths(FileHelper::normalizePath($webroot.$dir).'/');
           $scss->replaceVariables([
-            'baseUrl' => \ScssPhp\ScssPhp\ValueConverter::parseValue(Craft::$app->getRequest()->baseUrl)
+            'baseUrl' => \ScssPhp\ScssPhp\ValueConverter::fromPhp(Craft::$app->getRequest()->baseUrl)
           ]);
           $format = $settings->cssFormat;
           switch($format){ /* Depreciated scssphp 1.4 */
