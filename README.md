@@ -1,4 +1,4 @@
-# Pitch for Craft CMS 4/5
+# Pitch for Craft CMS 6
 
 On the go SCSS compiling, CSS/JS minifying, merging and caching.
 
@@ -6,11 +6,12 @@ On the go SCSS compiling, CSS/JS minifying, merging and caching.
 
 ## Requirements
 
-This plugin requires Craft CMS 4.0.0 or later.
+This plugin requires Craft CMS 6.0.0 or later.
 
 ## Installation
 
 `composer require cloudgrayau/pitch`
+`php craft plugin:install pitch`
 
 ## Pitch Overview
 
@@ -27,18 +28,9 @@ CSS and JS minifying uses the 'MatthiasMullie\Minify' package (which can be disa
 
 Caching is enabled by default (recommended) and the cache directory and duration can be customised.
 
-## 3.0.0 Upgrade Notes
-
-Pitch files should now be loaded using the new preferred and cache-busting `pitch()` twig command.
-To upgrade, please replace `url('scss/asset.scss')` with `pitch('asset.scss')` for example, as per the instructions below. The old method of loading pitch files will still function.
-
-Pitch will now scan the template files and try to automatically regenerate the cache after the cache has been cleared (this is disabled in development mode).
-
-For Craft 5, Pitch now uses the version 2 branch of the `scssphp` compiler. This release is a full rewrite of the compiler and requires >= PHP8.1.
-
 ## Advanced Caching Mode
 
-**Advanced Caching Mode** can also be enabled, which offers superior performance but requires server rewrites and changes to the default storage path. For instructions on how to setup Advanced Caching Mode, please refer to the [ADVANCED.md](https://github.com/cloudgrayau/pitch/blob/craft5/ADVANCED.md).
+**Advanced Caching Mode** can also be enabled, which offers superior performance but requires server rewrites and changes to the default storage path. For instructions on how to setup Advanced Caching Mode, please refer to the [ADVANCED.md](https://github.com/cloudgrayau/pitch/blob/craft6/ADVANCED.md).
 
 ## Using Pitch
 
@@ -46,7 +38,7 @@ For Craft 5, Pitch now uses the version 2 branch of the `scssphp` compiler. This
 - **CSS** - `{% do view.registerCssFile(pitch('<FILENAME>.css')) %}`
 - **JS** - `{% do view.registerJsFile(pitch('<FILENAME>.js')) %}`
 
-For [example files](https://github.com/cloudgrayau/pitch/tree/craft5/examples), please browse to the `/vendor/cloudgrayau/pitch/examples/` directory for installation.
+For [example files](https://github.com/cloudgrayau/pitch/tree/craft6/examples), please browse to the `/vendor/cloudgrayau/pitch/examples/` directory for installation.
 
 You can now compile inline SCSS and minify CSS/JS directly via your templates in Twig.
 
@@ -122,8 +114,6 @@ Please note, the old method of loading JS files via `{% do view.registerCssFile(
 
 The new twig `pitch()` command will automatically embed the last-modified date of the file/s into the compiled filename. Pitch will also scan the template files and try to automatically regenerate the cache after the cache has been cleared (this is disabled in development mode).
 
-If using the old load method, you can also force the browser to re-cache asset files by using `:DIGIT` in the asset URL prior to the extension, for example `'js/assets/site,plugin/chosen:01.js'`.
-
 Whilst in development mode, the browser cache of all assets will be forced to refresh on each page load.
 
 ## Subresource Integrity (SRI) ##
@@ -155,6 +145,6 @@ The Pitch cache can be cleared via the following methods:
 1. Via the CraftCMS Dashboard Widget
 2. Via the CraftCMS Settings => Pitch
 3. Via the CraftCMS Utilities => Caches
-4. Via the console `./craft pitch/clear`
+4. Via the console `./craft pitch:clear`
 
 Brought to you by [Cloud Gray Pty Ltd](https://cloudgray.com.au/)
