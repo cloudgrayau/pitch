@@ -2,25 +2,17 @@
 namespace cloudgrayau\pitch\controllers;
 
 use cloudgrayau\pitch\Pitch;
+use CraftCms\Cms\Http\RespondsWithFlash;
 
-use Craft;
-use craft\web\Controller;
+use function CraftCms\Cms\{cp_url, t};
 
-class CacheController extends Controller {
+class CacheController {
 
-  protected array|bool|int $allowAnonymous = [];
-
-  // Public Methods
-  // =========================================================================
+  use RespondsWithFlash;
   
-  public function actionRefresh(): void {
-    $this->setSuccessFlash(Craft::t('app', 'Cache successfully cleared.'));
-    Pitch::getInstance()->clearCache(true);
-  }
-
-  public function actionClearCache(): void {
-    $this->setSuccessFlash(Craft::t('app', 'Cache successfully cleared.'));
+  public function refresh() {
     Pitch::getInstance()->clearCache();
+    return $this->asSuccess(t('Cache successfully cleared.'), redirect: cp_url('dashboard'));
   }
 
 }

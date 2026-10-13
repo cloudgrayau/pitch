@@ -2,6 +2,10 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
+## 4.0.0-alpha.1 - 2026-10-13
+### Added
+- Initial support for Craft 6.0.0
+
 ## 3.1.5 - 2026-09-14
 ### Changed
 - Fixed blank `#{$baseUrl}` variable in SCSS (live environments).

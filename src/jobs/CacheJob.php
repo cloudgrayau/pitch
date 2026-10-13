@@ -3,70 +3,67 @@ namespace cloudgrayau\pitch\jobs;
 
 use cloudgrayau\pitch\Pitch;
 
-use Craft;
-use craft\queue\BaseJob;
-use craft\helpers\UrlHelper;
+use CraftCms\Cms\Queue\Job;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\File;
 
-class CacheJob extends BaseJob {
-  
-  protected function defaultDescription(): string {
-    return Craft::t('pitch', 'Generating Pitch cache');
-  }
-  public function execute($queue): void {
-    $directoryPath = CRAFT_BASE_PATH.'/templates/';
-    $pattern = '/\bpitch\s*\(\s*(?!\/|\\\\[\'"])((?:\'(?:[^\'\\\\]|\\\\.)*\'|"(?:[^"\\\\]|\\\\.)*"|[^\'",\)]+)*)\s*(?:,|\))/';
-    $output = [];
-    if (function_exists('exec')) {
-      exec('grep -rl "pitch(" '.$directoryPath, $output);
-    } else {
-      try {
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directoryPath, \RecursiveDirectoryIterator::SKIP_DOTS),\RecursiveIteratorIterator::LEAVES_ONLY);
-        foreach ($iterator as $file){
-          if ($file->isFile()){
-            $output[] = $file;
-          }
-        }
-      } catch (\UnexpectedValueException $e){
-      }
-    }
-    $files = [];
-    foreach($output as $file){
-      $data = file_get_contents($file);
-      preg_match_all($pattern, $data, $matches, PREG_SET_ORDER);
-      foreach($matches as $match){
-        $pitchUrl = Pitch::$plugin->twigExtension->generatePitch(str_replace(['\'','~'],'',$match[1]), false);
-        if ($pitchUrl){
-          $url = UrlHelper::siteUrl($pitchUrl);
-          if (!in_array($url, $files)){
-            $files[] = $url;
-          }
-        }
-      }
-    }
-    if (!empty($files)){
-      $count = count($files);
-      $curl = curl_init();
-      foreach ($files as $i => $file) {
-        $this->setProgress(
-          $queue,
-          $i / $count,
-          Craft::t('pitch', 'Generating {step, number} of {total, number}', [
-            'step' => ($i+1),
-            'total' => $count
-          ])
+use function CraftCms\Cms\site_url;
+
+class CacheJob extends Job implements ShouldQueue {
+
+  use InteractsWithQueue;
+
+  private const PATTERN = '/\bpitch\s*\(\s*(?!\/|\\\\[\'"])((?:\'(?:[^\'\\\\]|\\\\.)*\'|"(?:[^"\\\\]|\\\\.)*"|[^\'",\)]+)*)\s*(?:,|\))/';
+
+  public function handle(): void {
+    $urls = [];
+    foreach ($this->templateFiles() as $file) {
+      preg_match_all(self::PATTERN, file_get_contents($file), $matches, PREG_SET_ORDER);
+      foreach ($matches as $match) {
+        $pitchUrl = Pitch::getInstance()->twigExtension->generatePitch(
+          str_replace(['\'', '"', '~'], '', $match[1]),
+          false
         );
-        try {
-          curl_setopt($curl, CURLOPT_URL, $file.'?'.$_SERVER['REQUEST_TIME']);
-          curl_setopt($curl, CURLOPT_NOBODY, true);
-          curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-          curl_setopt($curl, CURLOPT_HEADER, true);
-          curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
-          curl_exec($curl);
-        } catch (\Exception $e) {
+        if ($pitchUrl) {
+          $url = site_url($pitchUrl);
+          if (!in_array($url, $urls)) {
+            $urls[] = $url;
+          }
         }
       }
-      curl_close($curl); 
+    }
+    if (empty($urls)) {
+      return;
+    }
+    $curl = curl_init();
+    curl_setopt_array($curl, [
+      CURLOPT_NOBODY => true,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_HEADER => true,
+      CURLOPT_FRESH_CONNECT => true,
+      CURLOPT_TIMEOUT => 30,
+    ]);
+    foreach ($urls as $url) {
+      curl_setopt($curl, CURLOPT_URL, $url . '?' . time());
+      curl_exec($curl);
     }
   }
-  
+
+  /** @return list<string> */
+  private function templateFiles(): array {
+    $found = [];
+    foreach ([resource_path('views')] as $dir) {
+      if (!is_dir($dir)) {
+        continue;
+      }
+      foreach (File::allFiles($dir) as $file) {
+        if (str_contains(file_get_contents($file->getPathname()), 'pitch(')) {
+          $found[] = $file->getPathname();
+        }
+      }
+    }
+    return array_values(array_unique($found));
+  }
+
 }

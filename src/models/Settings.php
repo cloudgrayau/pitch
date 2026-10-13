@@ -1,27 +1,12 @@
 <?php
 namespace cloudgrayau\pitch\models;
 
-use cloudgrayau\pitch\Pitch;
+use Closure;
+use CraftCms\Cms\Plugin\PluginSettings;
+use CraftCms\Cms\Support\Env;
+use CraftCms\Cms\Validation\Rules\EnvValueRule;
 
-use Craft;
-use craft\base\Model;
-use craft\helpers\App;
-use craft\helpers\FileHelper;
-use craft\helpers\UrlHelper;
-use craft\validators\ArrayValidator;
-
-class Settings extends Model {
-  
-  // Static Variables
-  // =========================================================================
-
-  public array $formatOptions = [
-    ['label' => 'Expanded', 'value' => 'Expanded'],
-    ['label' => 'Compressed', 'value' => 'Compressed'],
-  ];
-  
-  // Editable Variables
-  // =========================================================================
+class Settings extends PluginSettings {
 
   public string $cssFormat = 'Compressed';
   public bool $minifyFiles = true;
@@ -31,55 +16,41 @@ class Settings extends Model {
   public string $cacheDir = '';
   public int $cacheDuration = 31536000;
   public array $fileHeaders = [];
-  
-  // Public Methods
-  // =========================================================================
 
-  public function rules(): array {
-    return [
-      [['cacheDir','cssFormat'], 'string'],
-      [['minifyFiles','useCache','regenerateCache','advancedCache'], 'boolean'],
-      [['fileHeaders'], ArrayValidator::class],
-      ['cacheDuration', 'integer', 'min' => 0],
-      ['cacheDir', 'validateDir']
-    ];
+  public function getRules(): array {
+    return array_merge(parent::getRules(), [
+      'cssFormat' => ['string'],
+      'minifyFiles' => ['boolean'],
+      'useCache' => ['boolean'],
+      'regenerateCache' => ['boolean'],
+      'advancedCache' => ['boolean'],
+      'cacheDir' => new EnvValueRule(['string', $this->validateDir(...)]),
+      'cacheDuration' => ['integer', 'min:0'],
+      'fileHeaders' => ['array'],
+    ]);
   }
-  
-  public function validateDir($attribute): bool {
-    $value = $this->$attribute;
-    $cacheFolderPath = FileHelper::normalizePath(
-      App::parseEnv($value)
-    );
-    $root = FileHelper::normalizePath(App::parseEnv('@root'));
-    switch($cacheFolderPath){
-      case $root:
-      case FileHelper::normalizePath(App::parseEnv('@app')):
-      case FileHelper::normalizePath(App::parseEnv('@config')):
-      case FileHelper::normalizePath(App::parseEnv('@contentMigrations')):
-      case FileHelper::normalizePath(App::parseEnv('@craft')):
-      case FileHelper::normalizePath(App::parseEnv('@lib')):
-      case FileHelper::normalizePath(App::parseEnv('@runtime')):
-      case FileHelper::normalizePath(App::parseEnv('@storage')):
-      case FileHelper::normalizePath(App::parseEnv('@templates')):
-      case FileHelper::normalizePath(App::parseEnv('@translations')):
-      case FileHelper::normalizePath(App::parseEnv('@vendor')):
-      case FileHelper::normalizePath(App::parseEnv('@webroot')):
-        $this->addError($attribute, 'Storage path is invalid');
-        return false;
-        break;
-      default:
-        if (UrlHelper::isRootRelativeUrl($cacheFolderPath)){
-          if (mb_stripos($cacheFolderPath, $root) === false){
-            $this->addError($attribute, 'Storage path needs to be relative of the craft installation');
-            return false;
-          }
-        } else {
-          $this->addError($attribute, 'Storage path needs to be a relative path');
-          return false;
-        }
-        break;
+
+  private function validateDir(string $attribute, mixed $value, Closure $fail): void {
+    $path = $this->normalise((string) $value);
+    $protected = ['@root', '@app', '@config', '@contentMigrations', '@craft', '@lib',
+      '@runtime', '@storage', '@templates', '@translations', '@vendor', '@webroot'];
+    foreach ($protected as $alias) {
+      if ($path === $this->normalise(Env::parse($alias))) {
+        $fail('Storage path is invalid');
+        return;
+      }
     }
-    return true;
+    if (!str_starts_with($path, '/')) {
+      $fail('Storage path needs to be a relative path');
+      return;
+    }
+    if (!str_starts_with($path, $this->normalise(Env::parse('@root')) . '/')) {
+      $fail('Storage path needs to be relative of the craft installation');
+    }
   }
-  
+
+  private function normalise(string $path): string {
+    return rtrim(str_replace('\\', '/', $path), '/');
+  }
+
 }
