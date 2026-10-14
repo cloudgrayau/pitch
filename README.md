@@ -10,7 +10,7 @@ This plugin requires Craft CMS 6.0.0 or later.
 
 ## Installation
 
-`composer require cloudgrayau/pitch` 
+`composer require cloudgrayau/pitch`  
 `php craft plugin:install pitch`
 
 ## Pitch Overview
