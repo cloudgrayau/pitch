@@ -12,9 +12,9 @@ use cloudgrayau\utils\UtilityHelper;
 
 use CraftCms\Cms\Cms;
 use CraftCms\Cms\Cp\SelectOptions;
-use CraftCms\Cms\Form\{Form, FormContext};
-use CraftCms\Cms\Form\Controls\{Choice, Lightswitch, Text};
-use CraftCms\Cms\Form\Nodes\{Field, MarkdownContent};
+use CraftCms\Cms\Ui\{Ui, UiContext};
+use CraftCms\Cms\Ui\Controls\{Choice, Lightswitch, Text};
+use CraftCms\Cms\Ui\Nodes\{Field, MarkdownContent};
 use CraftCms\Cms\Plugin\{Plugin, PluginSettings};
 use CraftCms\Cms\Plugin\Events\PluginSettingsSaved;
 use CraftCms\Cms\Support\Env;
@@ -87,9 +87,8 @@ class Pitch extends Plugin {
     return new Settings();
   }
 
-  #[\Override]
-  public function settingsForm(FormContext $context = new FormContext): ?Form {
-    return Form::make([
+  public function settingsUi(UiContext $context = new UiContext): ?Ui {
+    return Ui::make([
       Field::make(t('SCSS Output Style', category: 'pitch'), Choice::make('cssFormat')->options([
         ['value' => 'Expanded', 'label' => 'Expanded'],
         ['value' => 'Compressed', 'label' => 'Compressed'],
