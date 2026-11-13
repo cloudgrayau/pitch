@@ -13,7 +13,7 @@ Please note, this mode completely ignores the `cacheDuration` setting and requir
 ### Configuration ###
 
 1. Enable both the **Enable Cache** and **Enable Advanced Caching** settings in Pitch.
-2. Update the Pitch **Cache Storage Path** from `@storage/pitch` to `@webroot/pitch`. The cached Pitch files need to be public for advanced caching to work.
+2. Update the Pitch **Cache Storage Path** from `@storage/runtime/pitch` to `@webroot/pitch`. The cached Pitch files need to be public for advanced caching to work.
 3. Update your server rewrites for either Apache or Nginx.
 4. Enjoy the updated performance.
 
@@ -25,7 +25,7 @@ To only use **Advanced Caching Mode** in production, you can use the example con
  	$isDev = App::env('CRAFT_ENVIRONMENT') === 'dev';
  	return [
  		'advancedCache' => !$isDev,
- 		'cacheDir' => ($isDev) ? '@storage/pitch' : '@webroot/pitch'
+ 		'cacheDir' => ($isDev) ? '@storage/runtime/pitch' : '@webroot/pitch'
  	];
  	?>
 

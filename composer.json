@@ -23,7 +23,7 @@
     ],
     "require": {
         "craftcms/cms": "^6.0.0-beta.1",
-        "scssphp/scssphp": "^1.13.0|^2.1.0",
+        "scssphp/scssphp": "^2.1.0",
         "matthiasmullie/minify": "^1.3.75",
         "php": "^8.5",
         "cloudgrayau/utils": "^2.0.0"

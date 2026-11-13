@@ -10,9 +10,6 @@ use ScssPhp\ScssPhp\Compiler;
 
 class PitchVariable {
 
-  // Public Methods
-  // =========================================================================
-
   public function renderSCSS(string $output = ''): string {
     $scss = new Compiler();
     $scss->setImportPaths(rtrim(Env::parse('@webroot'), '/') . '/');

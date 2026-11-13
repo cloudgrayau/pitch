@@ -16,11 +16,8 @@ class PitchTwigExtension extends AbstractExtension {
 
   private array $pitch = [];
 
-  // Public Methods
-  // =========================================================================
-
-  public function getName(): string {
-    return 'Pitch';
+  private function format(string $url, bool $base): string {
+    return $base ? site_url($url) : '/' . $url;
   }
 
   public function getFunctions(): array {
@@ -56,10 +53,6 @@ class PitchTwigExtension extends AbstractExtension {
       if (file_exists($asset)) {
         $realfiles[] = $file;
         $filemtime = max($filemtime, filemtime($asset));
-        /*$tempmtime = max($filemtime, filemtime($asset));
-        if ($tempmtime > $filemtime){
-          $filemtime = $tempmtime;
-        }*/
       }
     }
     if ($filemtime > 0) {
@@ -70,8 +63,8 @@ class PitchTwigExtension extends AbstractExtension {
     return '';
   }
 
-  public function generateSRI(string $pitch = '', string $hash = 'sha384'): mixed {
-    if (Pitch::devMode() || !isset($this->pitch[$pitch])){
+  public function generateSRI(string $pitch = '', string $hash = 'sha384'): string|false {
+    if (Pitch::devMode() || !isset($this->pitch[$pitch])) {
       return false;
     }
     $settings = Pitch::getInstance()->getSettings();
@@ -82,13 +75,6 @@ class PitchTwigExtension extends AbstractExtension {
       return $hash . '-' . base64_encode(hash_file($hash, $cacheFile, true));
     }
     return false;
-  }
-
-  // Private Methods
-  // =========================================================================
-
-  private function format(string $url, bool $base): string {
-    return $base ? site_url($url) : '/' . $url;
   }
 
 }

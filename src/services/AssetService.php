@@ -2,7 +2,7 @@
 namespace cloudgrayau\pitch\services;
 
 use cloudgrayau\pitch\helpers\CacheHelper;
-use cloudgrayau\pitch\helpers\PathHelper;
+use cloudgrayau\pitch\helpers\{PathGuard, PathHelper};
 use cloudgrayau\pitch\models\Settings;
 use cloudgrayau\pitch\Pitch;
 
@@ -16,13 +16,38 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AssetService {
 
-  // Public Methods
-  // =========================================================================
+  private function build(string $type, string $source, string $dir, Settings $settings): string {
+    $baseUrl = request()->getBasePath();
+    switch ($type) {
+      case 'scss':
+        $scss = new Compiler();
+        $scss->setImportPaths(PathGuard::normalise($dir) . '/');
+        $scss->replaceVariables(['baseUrl' => ValueConverter::fromPhp($baseUrl)]);
+        $scss->setOutputStyle(self::scssOutputStyle($settings->cssFormat));
+        return $scss->compileString($source)->getCss();
+      case 'css':
+        $css = str_replace('#{$baseUrl}', $baseUrl, $source);
+        if (!$settings->minifyFiles) {
+          return $css;
+        }
+        $minifier = new Minify\CSS();
+        $minifier->add($css);
+        return $minifier->minify();
+      default:
+        $js = str_replace('$baseUrl', $baseUrl, $source);
+        if (!$settings->minifyFiles) {
+          return $js;
+        }
+        $minifier = new Minify\JS();
+        $minifier->add($js);
+        return $minifier->minify();
+    }
+  }
 
   public function serve(Request $request, string $type): Response {
     /** @var Settings $settings */
     $settings = Pitch::getInstance()->getSettings();
-    $webroot = self::normalise(Env::parse('@webroot'));
+    $webroot = PathGuard::normalise(Env::parse('@webroot'));
     $paths = PathHelper::parse(PathHelper::fromRequest());
     $dir = $paths['dir'];
     $ext = (string) strrchr($paths['files'], '.');
@@ -35,7 +60,7 @@ class AssetService {
       if (($pos !== false) && ctype_digit(substr($name, $pos + 1))) {
         $name = substr($name, 0, $pos);
       }
-      $asset = self::normalise($webroot . '/' . $dir . $name . '.' . $type);
+      $asset = PathGuard::normalise($webroot . '/' . $dir . $name . '.' . $type);
       if (!str_starts_with($asset, $webroot . '/') || !is_file($asset)) {
         continue; // outside the web root, or missing
       }
@@ -86,55 +111,8 @@ class AssetService {
     return match ($format) {
       'Compact', 'Crunched', 'Compressed' => OutputStyle::COMPRESSED,
       'Nested', 'Expanded' => OutputStyle::EXPANDED,
-      default => $format,
+      default => OutputStyle::COMPRESSED,
     };
-  }
-
-  // Private Methods
-  // =========================================================================
-
-  private function build(string $type, string $source, string $dir, Settings $settings): string {
-    $baseUrl = request()->getBasePath();
-    switch ($type) {
-      case 'scss':
-        $scss = new Compiler();
-        $scss->setImportPaths(self::normalise($dir) . '/');
-        $scss->replaceVariables(['baseUrl' => ValueConverter::fromPhp($baseUrl)]);
-        $scss->setOutputStyle(self::scssOutputStyle($settings->cssFormat));
-        return $scss->compileString($source)->getCss();
-      case 'css':
-        $css = str_replace('#{$baseUrl}', $baseUrl, $source);
-        if (!$settings->minifyFiles) {
-          return $css;
-        }
-        $minifier = new Minify\CSS();
-        $minifier->add($css);
-        return $minifier->minify();
-      default:
-        $js = str_replace('$baseUrl', $baseUrl, $source);
-        if (!$settings->minifyFiles) {
-          return $js;
-        }
-        $minifier = new Minify\JS();
-        $minifier->add($js);
-        return $minifier->minify();
-    }
-  }
-
-  /** Lexically collapses `.`, `..` and repeated slashes (absolute Unix paths). Doesn't resolve symlinks. */
-  private static function normalise(string $path): string {
-    $parts = [];
-    foreach (explode('/', str_replace('\\', '/', $path)) as $segment) {
-      if ($segment === '' || $segment === '.') {
-        continue;
-      }
-      if ($segment === '..') {
-        array_pop($parts);
-        continue;
-      }
-      $parts[] = $segment;
-    }
-    return '/' . implode('/', $parts);
   }
 
 }
