@@ -117,6 +117,13 @@ class CacheHelper {
     return isset($this->known[$entry]) || preg_match(self::HASHED, $entry) === 1 || preg_match(self::VERSIONED, $entry) === 1;
   }
 
+  /** How many cached files the manifest lists for a folder that still exist. Older, untracked cache files aren't counted. */
+  public static function count(string $dir): int {
+    $dir = rtrim($dir, '/') . '/';
+    $entries = self::entries($dir, (string) @file_get_contents(storage_path(self::MANIFEST))) ?? [];
+    return count(array_filter($entries, fn (string $entry) => self::locate($dir, $entry) !== null));
+  }
+
   /**
    * Deletes the files Pitch wrote to a cache folder, then the folders they leave empty.
    * Anything else in the folder is left alone. Returns how many files were deleted.

@@ -1,9 +1,11 @@
 <?php
 namespace cloudgrayau\pitch\widgets;
 
+use cloudgrayau\pitch\helpers\CacheHelper;
 use cloudgrayau\pitch\Pitch;
 
 use CraftCms\Cms\Dashboard\Widgets\Widget;
+use CraftCms\Cms\Support\Html;
 
 use function CraftCms\Cms\{cp_url, t};
 
@@ -25,12 +27,22 @@ class CacheWidget extends Widget {
     return 'craft:html-widget';
   }
 
+  /** Laid out like Craft's Updates widget: a status line, then a button. */
   public function props(): array {
+    $settings = Pitch::getInstance()->getSettings();
+    if ($settings->useCache) {
+      $count = CacheHelper::count(CacheHelper::resolveDir($settings->cacheDir));
+      $status = t('{num, plural, =0{No asset files are cached.} =1{1 asset file is cached.} other{# asset files are cached.}}', ['num' => $count], 'pitch');
+    } else {
+      $status = t('Caching is turned off.', category: 'pitch');
+    }
+    $button = Html::tag('craft-button', Html::encode(t('Refresh Cache', category: 'pitch')), ['type' => 'submit', 'variant' => 'primary', 'style' => 'width:100%']);
     return [
-      'html' => '<form method="post" action="' . e(cp_url('pitch/refresh')) . '">'
-        . csrf_field()
-        . '<button type="submit" style="width:100%;padding:8px 14px;cursor:pointer;">' . e(t('Refresh Entire Cache', category: 'pitch')) . '</button>'
-        . '</form>',
+      'html' => Html::tag('form', csrf_field() . Html::tag('p', Html::encode($status)) . $button, [
+        'method' => 'post',
+        'action' => cp_url('pitch/refresh'),
+        'class' => 'text-center space-y-3',
+      ]),
     ];
   }
 
