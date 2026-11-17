@@ -24,7 +24,7 @@ class CacheJob extends Job implements ShouldQueue {
    *
    * @return iterable<string>
    */
-  private function templates(): iterable {
+  private static function templates(): iterable {
     $seen = [];
     foreach ([resource_path('views'), base_path('templates')] as $dir) {
       if (!is_dir($dir)) {
@@ -44,21 +44,33 @@ class CacheJob extends Job implements ShouldQueue {
     }
   }
 
-  public function handle(): void {
+  /**
+   * The asset path (`css/dir/a,b:123.css`) of every pitch() call in the site's templates whose source
+   * files exist. It's both the file's URL path and its cache key.
+   *
+   * @return list<string>
+   */
+  public static function paths(): array {
     $twig = Pitch::getInstance()->twigExtension;
-    $urls = [];
-    foreach ($this->templates() as $contents) {
+    $paths = [];
+    foreach (self::templates() as $contents) {
       preg_match_all(self::PATTERN, $contents, $matches, PREG_SET_ORDER);
       foreach ($matches as $match) {
-        $pitchUrl = $twig->generatePitch(str_replace(['\'', '"', '~'], '', $match[1]), false);
-        if ($pitchUrl !== '') {
-          $urls[site_url($pitchUrl)] = true;
+        $path = $twig->generatePitch(str_replace(['\'', '"', '~'], '', $match[1]), false);
+        if ($path !== '') {
+          $paths[ltrim($path, '/')] = true;
         }
       }
     }
-    foreach (array_keys($urls) as $url) {
+    return array_keys($paths);
+  }
+
+  public function handle(): void {
+    foreach (self::paths() as $path) {
+      $url = site_url($path);
       try {
-        // A HEAD request is enough to build and cache the file; the query string skips any HTTP cache in front
+        // Requested over HTTP, so the files are built with the site's base URL. A HEAD request is
+        // enough to build and cache the file; the query string skips any HTTP cache in front
         Http::timeout(30)->head($url, ['t' => time()]);
       } catch (ConnectionException $e) {
         Log::info("Pitch couldn't warm $url: " . $e->getMessage());

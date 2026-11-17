@@ -2,9 +2,17 @@
 
 Release notes for the Pitch Craft CMS plugin.
 
-## 4.0.0-beta.1 - 2026-11-11
-### Added
-- Initial support for Craft 6.0.0
+## 4.0.0-beta.1 - 2026-11-13
+### Changed
+- Pitch now requires Craft CMS 6.0 and PHP 8.5
+- Pitch now requires `scssphp/scssphp` 2.1.0 or later
+- The config file is now published to `config/craft/pitch.php`
+- The default cache folder is now `@storage/runtime/pitch` (previously `@storage/pitch`)
+- The console command is now `php craft pitch:clear` (previously `./craft pitch/clear`)
+- Pitch now keeps a manifest of the files it caches, and clearing the cache only deletes those files
+- The cache folder must now be inside the project, and can't be inside or contain protected folders such as `vendor`, `config`, `routes` or `storage/app`
+- The dashboard widget now shows how many asset files are cached
+- The example files now use Craft 6’s `public/` and `resources/views/` folders
 
 ## 3.1.5 - 2026-09-14
 ### Changed

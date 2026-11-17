@@ -6,6 +6,7 @@ use cloudgrayau\pitch\helpers\CacheHelper;
 use cloudgrayau\pitch\helpers\PathGuard;
 use cloudgrayau\pitch\jobs\CacheJob;
 use cloudgrayau\pitch\models\Settings;
+use cloudgrayau\pitch\services\AssetService;
 use cloudgrayau\pitch\twigextensions\PitchTwigExtension;
 use cloudgrayau\pitch\variables\PitchVariable;
 use cloudgrayau\pitch\widgets\CacheWidget;
@@ -57,16 +58,41 @@ class Pitch extends Plugin {
     });
   }
 
-  public function clearCache(): void {
+  /** Clears the cache, then queues its regeneration when that's turned on (unless `$queue` is false). Returns whether it cleared. */
+  public function clearCache(bool $queue = true): bool {
     $settings = $this->getSettings();
     $path = CacheHelper::resolveDir($settings->cacheDir);
     if (PathGuard::problem($path) !== null) {
       Log::warning('Pitch: refusing to clear an unsafe cache directory: ' . $path);
-      return;
+      return false;
     }
     CacheHelper::clear($path); // only the files Pitch wrote
-    if (!self::devMode() && $settings->regenerateCache) {
+    if ($queue && !self::devMode() && $settings->regenerateCache) {
       dispatch(new CacheJob());
+    }
+    return true;
+  }
+
+  /**
+   * Clears the cache and regenerates it in this request, rather than in a queue job that may wait
+   * behind others. Building in-process needs no HTTP requests back to the site, so it can't tie up
+   * another PHP worker. For the dashboard widget, whose request has the site's base URL.
+   */
+  public function refreshCache(): void {
+    if (!$this->clearCache(false)) {
+      return;
+    }
+    $settings = $this->getSettings();
+    if (self::devMode() || !$settings->regenerateCache || !$settings->useCache) {
+      return;
+    }
+    $assets = app(AssetService::class);
+    foreach (CacheJob::paths() as $path) {
+      try {
+        $assets->generate($path, strstr($path, '/', true));
+      } catch (\Throwable $e) {
+        Log::info("Pitch couldn't regenerate $path: " . $e->getMessage());
+      }
     }
   }
   

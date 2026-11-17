@@ -44,11 +44,17 @@ class AssetService {
     }
   }
 
-  public function serve(Request $request, string $type): Response {
+  /**
+   * Builds (or reads from the cache) the file at an asset path like `css/dir/a,b:123.css`, which is
+   * both its URL path and its cache key. Returns null when none of its source files exist.
+   *
+   * @return array{body: string, mtime: int, offset: int}|null
+   */
+  public function generate(string $path, string $type): ?array {
     /** @var Settings $settings */
     $settings = Pitch::getInstance()->getSettings();
     $webroot = PathGuard::normalise(Env::parse('@webroot'));
-    $paths = PathHelper::parse(PathHelper::fromRequest());
+    $paths = PathHelper::parse(PathHelper::fromPath($path));
     $dir = $paths['dir'];
     $ext = (string) strrchr($paths['files'], '.');
     $base = strlen($ext) ? substr($paths['files'], 0, -strlen($ext)) : $paths['files'];
@@ -67,7 +73,9 @@ class AssetService {
       $mtime = max($mtime, filemtime($asset));
       $source .= file_get_contents($asset) . "\n";
     }
-    abort_if($mtime === 0, 404, 'Page not found.');
+    if ($mtime === 0) {
+      return null;
+    }
 
     $devMode = Pitch::devMode();
     $offset = ($settings->cacheDuration > 0)
@@ -82,12 +90,21 @@ class AssetService {
       $settings->useCache,
       $settings->advancedCache
     );
-    $path = $request->path();
     $body = $cache->read($path, $offset, $mtime);
     if ($body === null) {
       $body = $this->build($type, $source, $webroot . '/' . $dir, $settings);
       $cache->write($path, $body);
     }
+    return ['body' => $body, 'mtime' => $mtime, 'offset' => $offset];
+  }
+
+  public function serve(Request $request, string $type): Response {
+    $file = $this->generate($request->path(), $type);
+    abort_if($file === null, 404, 'Page not found.');
+    ['body' => $body, 'mtime' => $mtime, 'offset' => $offset] = $file;
+    /** @var Settings $settings */
+    $settings = Pitch::getInstance()->getSettings();
+    $devMode = Pitch::devMode();
 
     $response = response($body, 200, [
       'Content-Type' => (($type === 'js') ? 'text/javascript' : 'text/css') . '; charset=utf-8',

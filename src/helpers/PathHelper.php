@@ -3,9 +3,9 @@ namespace cloudgrayau\pitch\helpers;
 
 class PathHelper {
 
-  /** Segments of the current request path, minus the leading css/scss/js segment. */
-  public static function fromRequest(): array {
-    $segments = explode('/', request()->path());
+  /** Segments of an asset path like `css/dir/a,b:123.css` (a request path), minus the leading css/scss/js segment. */
+  public static function fromPath(string $path): array {
+    $segments = explode('/', ltrim($path, '/'));
     array_shift($segments);
     return $segments;
   }
